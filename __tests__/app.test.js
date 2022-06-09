@@ -121,3 +121,4 @@ describe('Types appropriately change isEffectiveAgainst and isWeakTo', () => {
         expect(wetMan.isEffectiveAgainst(wetMan)).toBe(false)
     })
 })
+
