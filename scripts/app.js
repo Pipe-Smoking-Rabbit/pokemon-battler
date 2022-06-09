@@ -71,4 +71,11 @@ class Squirtle extends Water {
 }
 
 
-module.exports = { Pokemon, Fire, Water, Grass, Charmander, Squirtle }
+class Bulbasaur extends Grass {
+  constructor(name) {
+    super(name);
+    this.move = "vine whip";
+  }
+}
+
+module.exports = { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur }
