@@ -144,4 +144,10 @@ describe("testing for implementation of species of pokemons", () => {
     expect(bulbasaur).toBeInstanceOf(parent.Pokemon);
     expect(bulbasaur.move).toBe("vine whip");
   });
+  test("Rattata returns an instance of the pokemon class, also has own move", () => {
+    const rattata = new parent.Rattata("Stewart Little");
+    expect(rattata).toBeInstanceOf(parent.Rattata);
+    expect(rattata).toBeInstanceOf(parent.Pokemon);
+    expect(rattata.move).toBe("round-house kick");
+  });
 });

@@ -78,4 +78,11 @@ class Bulbasaur extends Grass {
   }
 }
 
-module.exports = { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur }
+class Rattata extends Pokemon {
+  constructor(name) {
+    super(name);
+    this.move = "round-house kick";
+  }
+}
+
+module.exports = { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata }
