@@ -61,9 +61,33 @@ describe("Trainer", () => {
               expect(trainer.belt[i].storage).not.toBe(charlizard);
           }
           expect(consoleSpy).toHaveBeenCalledWith("You don't have any empty pokeballs left!");
-          consoleSpy.mockRestore()
+          consoleSpy.mockRestore();
       });
     });
-    describe('', () => {});
+    describe('getPokemon method', () => {
+      test('getPokemon returns the first pokemon in the trainers belt, if the name matches the passed argument', () => {
+        const trainer = new Trainer("Guysie Bob");
+        const lizarchar = new Charmander('Friendboy');
+        trainer.catch(lizarchar);
+        expect(trainer.getPokemon("Friendboy")).toBe(lizarchar)
+      });
+      test('getPokemon returns the first pokemon in the belt which has a name matching the passed argument', () => {
+        const trainer = new Trainer("Guysie Bob");
+        const wetty = new Squirtle('Squirty Turty');
+        const lizarchar = new Charmander('Friendboy');
+        trainer.catch(wetty);
+        trainer.catch(wetty);
+        trainer.catch(lizarchar);
+        expect(trainer.getPokemon("Friendboy")).toBe(lizarchar)
+      });
+      test('getPokemon returns "You don\'t have a pokemon by that name"', () => {
+        const trainer = new Trainer("Guysie Bob");
+        const wetty = new Squirtle('Squirty Turty');
+        const lizarchar = new Charmander('Friendboy');
+        trainer.catch(wetty);
+        trainer.catch(lizarchar);
+        expect(trainer.getPokemon("Wetman")).toBe("You don't have a pokemon by that name")
+      })
+    });
   });
 });

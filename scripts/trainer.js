@@ -12,7 +12,19 @@ class Trainer {
                 pokeball.throw(target)
                 return
             }
-        } console.log("You don't have any empty pokeballs left!");
+        }
+        console.log("You don't have any empty pokeballs left!");
+    }
+    getPokemon(name) {
+        for (let i = 0; i < this.belt.length; i++) {
+            const pokeball = this.belt[i]
+            if (pokeball.storage !== null) {
+                if (pokeball.storage.name === name) {
+                    return pokeball.throw();
+                }
+            }
+        }
+        return "You don't have a pokemon by that name"
     }
 }
 
