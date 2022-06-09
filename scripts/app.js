@@ -56,4 +56,19 @@ class Grass extends Pokemon {
     }
 }
 
-module.exports = { Pokemon, Fire, Water, Grass }
+class Charmander extends Fire {
+    constructor(name) {
+        super(name);
+        this.move = "ember"
+    }
+}
+
+class Squirtle extends Water {
+  constructor(name) {
+    super(name);
+    this.move = "water gun";
+  }
+}
+
+
+module.exports = { Pokemon, Fire, Water, Grass, Charmander, Squirtle }
