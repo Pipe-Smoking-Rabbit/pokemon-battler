@@ -69,3 +69,55 @@ describe("Pokemon Class", () => {
     });
   });
 });
+
+describe('Fire Class', () => {
+    test('Returns an instance of both the Fire class and the Pokemon class', () => {
+        const fireBoy = new parent.Fire("Bigshaq")
+        expect(fireBoy).toBeInstanceOf(parent.Fire)
+        expect(fireBoy).toBeInstanceOf(parent.Pokemon)
+    })
+    test('Returned instance has the type of fire', () => {
+        const fireBoy = new parent.Fire("Bigshaq")
+        expect(fireBoy.type).toBe('fire')
+    })
+})
+
+describe('Water Class', () => {
+    test('Returns an instance of both the Water class and the Pokemon class', () => {
+        const wetMan = new parent.Water("Moist")
+        expect(wetMan).toBeInstanceOf(parent.Water)
+        expect(wetMan).toBeInstanceOf(parent.Pokemon)
+    })
+    test('Returned instance has the type of water', () => {
+        const wetMan = new parent.Water("Moist")
+        expect(wetMan.type).toBe('water')
+    })
+})
+
+describe('Grass Class', () => {
+    test('Returns an instance of both the Grass class and the Pokemon class', () => {
+        const planty = new parent.Grass("Snoop Dogg")
+        expect(planty).toBeInstanceOf(parent.Grass)
+        expect(planty).toBeInstanceOf(parent.Pokemon)
+    })
+    test('Returned instance has the type of water', () => {
+        const planty = new parent.Grass("Snoop Dogg")
+        expect(planty.type).toBe('grass')
+    })
+})
+
+describe('Types appropriately change isEffectiveAgainst and isWeakTo', () => {
+    test('Returns true or false correctly based on type', () => {
+        const planty = new parent.Grass("Snoop Dogg")
+        const wetMan = new parent.Water("Moist")
+        const fireBoy = new parent.Fire("Bigshaq")
+
+        expect(planty.isWeakTo(fireBoy)).toBe(true)
+        expect(planty.isWeakTo(wetMan)).toBe(false)
+        expect(fireBoy.isWeakTo(fireBoy)).toBe(false)
+
+        expect(wetMan.isEffectiveAgainst(fireBoy)).toBe(true)
+        expect(planty.isEffectiveAgainst(wetMan)).toBe(true)
+        expect(wetMan.isEffectiveAgainst(wetMan)).toBe(false)
+    })
+})

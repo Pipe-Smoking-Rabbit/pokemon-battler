@@ -16,6 +16,7 @@ class Pokemon {
 
     isWeakTo(enemy) {
         if (this.type === "normal" || enemy.type === "normal") return false
+        if (this.type === enemy.type) return false;
         return !this.isEffectiveAgainst(enemy)
     }
 
@@ -34,5 +35,25 @@ class Pokemon {
     }
 }
 
+class Fire extends Pokemon {
+    constructor(name) {
+        super(name)
+        this.type = 'fire'
+    }
+}
 
-module.exports = { Pokemon }
+class Water extends Pokemon {
+    constructor(name) {
+        super(name)
+        this.type = 'water'
+    }
+}
+
+class Grass extends Pokemon {
+    constructor(name) {
+        super(name)
+        this.type = 'grass'
+    }
+}
+
+module.exports = { Pokemon, Fire, Water, Grass }
