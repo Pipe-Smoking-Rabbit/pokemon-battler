@@ -43,7 +43,7 @@ describe("Pokemon Class", () => {
       const dansMon = new Pokemon("Morapungo");
       const consoleSpy = jest.spyOn(console, "log");
       expect(dansMon.useMove()).toBe(dansMon.attackDamage);
-      expect(consoleSpy).toHaveBeenCalledWith("Morapungo used tackle.");
+      expect(consoleSpy).toHaveBeenCalledWith("Morapungo used tackle. It dealt 10 damage.");
       expect(consoleSpy).toHaveBeenCalledTimes(1);
       consoleSpy.mockRestore();
     });

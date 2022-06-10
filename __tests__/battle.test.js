@@ -18,9 +18,9 @@ describe("battle function", () => {
       const squirtle = new Squirtle("Squirtle");
       const charmander = new Charmander("Charmander");
       takeTurn(squirtle, charmander, true);
-      expect(charmander.hitPoints).toBe(100 - 12.5);
+      expect(charmander.hitPoints).toBe(40 - (16*1.25));
       takeTurn(charmander, squirtle);
-      expect(squirtle.hitPoints).toBe(100 - 7.5);
+      expect(squirtle.hitPoints).toBe(46 - (18*0.75));
     });
     test("takeTurn return the opposite of the boolean passed as an argument", () => {
       const squirtle = new Squirtle("Squirtle");
