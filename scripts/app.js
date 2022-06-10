@@ -4,7 +4,7 @@ const { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata } 
 
 const testTrainer = new Trainer("Keith");
 const testEnemy = new Trainer("Bob");
-const squirtle = new Squirtle('Squirtle')
+const squirtle = new Squirtle('Vincent')
 const charmander = new Charmander('Charmander')
 
 testTrainer.catch(squirtle)

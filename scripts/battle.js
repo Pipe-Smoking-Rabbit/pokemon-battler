@@ -31,7 +31,7 @@ function instantiateBattle(player, enemyPlayer) {
         ])
         .then((playerMon) => {
             enemyMon = enemyPokemon[Math.floor(Math.random() * enemyPokemon.length)]
-            beginBattle(playerMon.pokemon, enemyMon)
+            beginBattle(player.getPokemon(playerMon.pokemon), enemyMon)
         })
         .catch((error) => {
             if (error.isTtyError) {
@@ -45,6 +45,8 @@ function instantiateBattle(player, enemyPlayer) {
 function beginBattle(playerPokemon, enemyPokemon) {
     let playerTurn = true;
     console.log(playerPokemon)
+    console.log(enemyPokemon)
+
 
     // while(!playerPokemon.hasFainted() && !enemyPokemon.hasFainted()) {
     //     if (playerTurn) 
