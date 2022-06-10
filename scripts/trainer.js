@@ -30,7 +30,6 @@ class Trainer {
         return "You don't have a pokemon by that name"
     }
     fight(enemyPlayer) {
-        console.log(this.belt)
         instantiateBattle(this, enemyPlayer);
     }
 }

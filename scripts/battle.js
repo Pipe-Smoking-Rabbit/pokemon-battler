@@ -1,56 +1,84 @@
-const inquirer = require('inquirer')
+const inquirer = require("inquirer");
 const { Trainer } = require("../scripts/trainer");
 const { Pokeball } = require("../scripts/pokeball");
-const { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata } = require("../scripts/monsters");
-
-
+const {
+  Pokemon,
+  Fire,
+  Water,
+  Grass,
+  Charmander,
+  Squirtle,
+  Bulbasaur,
+  Rattata,
+} = require("../scripts/monsters");
 
 function instantiateBattle(player, enemyPlayer) {
-    friendlyPokemon = [];
-    enemyPokemon = [];
-    for (let i = 0; i < player.belt.length; i++) {
-        const currentMon = player.belt[i];
-        if (currentMon.storage !== null) {
-            friendlyPokemon.push(currentMon.storage);
-        }
+  playerChoices = [];
+  enemyChoices = [];
+  for (let i = 0; i < player.belt.length; i++) {
+    const inspectedPokeball = player.belt[i];
+    if (inspectedPokeball.storage !== null) {
+      playerChoices.push(inspectedPokeball.storage);
     }
-    for (let i = 0; i < enemyPlayer.belt.length; i++) {
-        const currentMon = enemyPlayer.belt[i];
-        if (currentMon.storage !== null)
-        enemyPokemon.push(currentMon.storage);
-    }
+  }
+  for (let i = 0; i < enemyPlayer.belt.length; i++) {
+    const inspectedPokeball = enemyPlayer.belt[i];
+    if (inspectedPokeball.storage !== null)
+      enemyChoices.push(inspectedPokeball.storage);
+  }
 
-    inquirer
-        .prompt([
-        {
-            type: 'list',
-            name: 'pokemon',
-            message: 'Which pokemon do you choose?',
-            choices: friendlyPokemon
-        }
-        ])
-        .then((playerMon) => {
-            enemyMon = enemyPokemon[Math.floor(Math.random() * enemyPokemon.length)]
-            beginBattle(player.getPokemon(playerMon.pokemon), enemyMon)
-        })
-        .catch((error) => {
-            if (error.isTtyError) {
-                console.log('uh oh')
-              } else {
-                console.log('uh oh again')
-              }
-        })
-
-};
-function beginBattle(playerPokemon, enemyPokemon) {
-    let playerTurn = true;
-    console.log(playerPokemon)
-    console.log(enemyPokemon)
-
-
-    // while(!playerPokemon.hasFainted() && !enemyPokemon.hasFainted()) {
-    //     if (playerTurn) 
-    // }
+  inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "pokemon",
+        message: "Which pokemon do you choose?",
+        choices: playerChoices,
+      },
+    ])
+    .then((selectedPokemon) => {
+      randomisedEnemy =
+        enemyChoices[Math.floor(Math.random() * enemyChoices.length)];
+      beginBattle(player.getPokemon(selectedPokemon.pokemon), randomisedEnemy);
+    })
+    .catch((error) => {
+      if (error.isTtyError) {
+        console.log("uh oh");
+      } else {
+        console.log("uh oh again");
+      }
+    });
 }
 
-module.exports = { instantiateBattle }
+function beginBattle(playerPokemon, enemyPokemon) {
+  let playerTurn = true;
+  console.log(`Your opponent sent out ${enemyPokemon.name.toUpperCase()}!`);
+
+  while (!playerPokemon.hasFainted() && !enemyPokemon.hasFainted()) {
+    if (playerTurn) {
+      playerTurn = takeTurn(playerPokemon, enemyPokemon, playerTurn);
+    } else {
+      playerTurn = takeTurn(enemyPokemon, playerPokemon, playerTurn);
+    }
+  }
+  if (playerPokemon.hasFainted()) {
+    console.log(`You Lost!`)
+  } 
+  if (enemyPokemon.hasFainted()) {
+    console.log(`You Won!`)
+  }
+}
+
+function takeTurn(attacker, defender, playerTurn) {
+  if (defender.isWeakTo(attacker)) {
+    defender.takeDamage(attacker.useMove() * 1.25);
+  } else if (defender.isEffectiveAgainst(attacker)) {
+    defender.takeDamage(attacker.useMove() * 0.75);
+  } else {
+    defender.takeDamage(attacker.useMove());
+  }
+  console.log(`${defender.name} has ${defender.hitPoints}HP remaining`)
+  return !playerTurn;
+}
+
+module.exports = { instantiateBattle, takeTurn };
