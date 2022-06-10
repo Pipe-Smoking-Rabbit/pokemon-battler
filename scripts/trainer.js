@@ -1,4 +1,6 @@
 const { Pokeball } = require("./pokeball")
+const { instantiateBattle } = require("./battle")
+const { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata } = require("../scripts/monsters");
 
 class Trainer {
     constructor(name) {
@@ -24,7 +26,12 @@ class Trainer {
                 }
             }
         }
+        console.log("You don't have a pokemon by that name")
         return "You don't have a pokemon by that name"
+    }
+    fight(enemyPlayer) {
+        console.log(this.belt)
+        instantiateBattle(this, enemyPlayer);
     }
 }
 
