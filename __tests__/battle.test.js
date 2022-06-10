@@ -30,6 +30,3 @@ describe("battle function", () => {
     });
   });
 });
-
-const testTrainer = new Trainer("Keith");
-const testEnemy = new Trainer("Bob");

@@ -13,7 +13,7 @@ const {
 
 describe("Trainer", () => {
   test('Trainer contains a property "belt" which is an array of 6 unique Pokeballs', () => {
-    const trainer = new Trainer("darren");
+    const trainer = new Trainer("darren", Pokeball);
     expect(trainer.hasOwnProperty("belt")).toBe(true);
     expect(trainer.belt.length).toBe(6);
     for (let i = 0; i < 6; i++) {
@@ -28,13 +28,13 @@ describe("Trainer", () => {
   describe("methods", () => {
     describe("catch method", () => {
       test("catch method should call the throw method on the first empty pokeball in the belt to catch the pokemon passed to catch method as argument", () => {
-        const trainer = new Trainer("darren");
+        const trainer = new Trainer("darren", Pokeball);
         const bulbasaur = new Bulbasaur("chadignton bear");
         trainer.catch(bulbasaur);
         expect(trainer.belt[0].storage).toBe(bulbasaur);
       });
       test("catch method should not call throw on pokeballs which already contain pokemon in storage", () => {
-        const trainer = new Trainer("darren");
+        const trainer = new Trainer("darren", Pokeball);
         const bulbasaur = new Bulbasaur("chadignton bear");
         const charlizard = new Charmander("charlizard");
         const rattata = new Rattata("remi")
@@ -46,7 +46,7 @@ describe("Trainer", () => {
         expect(trainer.belt[2].storage).toBe(rattata);
       });
       test('catch method returns a console log informing the user that due to bad life decisions they no longer have any empty pokeballs remaining with which to catch more pokemon', () => {
-          const trainer = new Trainer("darren");
+          const trainer = new Trainer("darren", Pokeball);
           const bulbasaur = new Bulbasaur("chadignton bear");
           const charlizard = new Charmander("charlizard");
           const consoleSpy = jest.spyOn(console, "log");
@@ -66,13 +66,13 @@ describe("Trainer", () => {
     });
     describe('getPokemon method', () => {
       test('getPokemon returns the first pokemon in the trainers belt, if the name matches the passed argument', () => {
-        const trainer = new Trainer("Guysie Bob");
+        const trainer = new Trainer("Guysie Bob", Pokeball);
         const lizarchar = new Charmander('Friendboy');
         trainer.catch(lizarchar);
         expect(trainer.getPokemon("Friendboy")).toBe(lizarchar)
       });
       test('getPokemon returns the first pokemon in the belt which has a name matching the passed argument', () => {
-        const trainer = new Trainer("Guysie Bob");
+        const trainer = new Trainer("Guysie Bob", Pokeball);
         const wetty = new Squirtle('Squirty Turty');
         const lizarchar = new Charmander('Friendboy');
         trainer.catch(wetty);
@@ -81,7 +81,7 @@ describe("Trainer", () => {
         expect(trainer.getPokemon("Friendboy")).toBe(lizarchar)
       });
       test('getPokemon returns "You don\'t have a pokemon by that name"', () => {
-        const trainer = new Trainer("Guysie Bob");
+        const trainer = new Trainer("Guysie Bob", Pokeball);
         const wetty = new Squirtle('Squirty Turty');
         const lizarchar = new Charmander('Friendboy');
         trainer.catch(wetty);

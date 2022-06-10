@@ -1,9 +1,7 @@
-const { Pokeball } = require("./pokeball")
 const { instantiateBattle } = require("./battle")
-const { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata } = require("../scripts/monsters");
 
 class Trainer {
-    constructor(name) {
+    constructor(name, Pokeball) {
         this.name = name
         this.belt = [new Pokeball, new Pokeball, new Pokeball, new Pokeball, new Pokeball, new Pokeball]
     }

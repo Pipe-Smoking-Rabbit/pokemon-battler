@@ -1,16 +1,4 @@
 const inquirer = require("inquirer");
-const { Trainer } = require("../scripts/trainer");
-const { Pokeball } = require("../scripts/pokeball");
-const {
-  Pokemon,
-  Fire,
-  Water,
-  Grass,
-  Charmander,
-  Squirtle,
-  Bulbasaur,
-  Rattata,
-} = require("../scripts/monsters");
 
 function instantiateBattle(player, enemyPlayer) {
   playerChoices = [];
@@ -50,15 +38,57 @@ function instantiateBattle(player, enemyPlayer) {
     });
 }
 
-function beginBattle(playerPokemon, enemyPokemon) {
+async function beginBattle(playerPokemon, enemyPokemon) {
   let playerTurn = true;
+  let hasEscaped = false;
   console.log(`Your opponent sent out ${enemyPokemon.name.toUpperCase()}!`);
 
-  while (!playerPokemon.hasFainted() && !enemyPokemon.hasFainted()) {
+   while (!playerPokemon.hasFainted() && !enemyPokemon.hasFainted() && hasEscaped === false) {
     if (playerTurn) {
-      playerTurn = takeTurn(playerPokemon, enemyPokemon, playerTurn);
+        await inquirer
+            .prompt([
+            {
+                type: "list",
+                name: "choice",
+                message: "What do you want to do?",
+                choices: ["Attack", "Run"],
+            },
+            ])
+            .then((userInput) => {
+                if (userInput.choice === "Attack") {
+                playerTurn = takeTurn(playerPokemon, enemyPokemon, playerTurn);
+                } else if (userInput.choice === "Run") {
+                    console.log("You got away safely.");
+                    hasEscaped = true;
+                }
+            })
+            .catch((error) => {
+            if (error.isTtyError) {
+                console.log("uh oh");
+            } else {
+                console.log("uh oh again");
+            }
+            });
     } else {
-      playerTurn = takeTurn(enemyPokemon, playerPokemon, playerTurn);
+        await inquirer
+            .prompt([
+            {
+                type: "list",
+                name: "choice",
+                message: "It's the enemy's turn.",
+                choices: ["OK"],
+            },
+            ])
+            .then((userInput) => {
+                playerTurn = takeTurn(enemyPokemon, playerPokemon, playerTurn);
+            })
+            .catch((error) => {
+            if (error.isTtyError) {
+                console.log("uh oh");
+            } else {
+                console.log("uh oh again");
+            }
+            });
     }
   }
   if (playerPokemon.hasFainted()) {

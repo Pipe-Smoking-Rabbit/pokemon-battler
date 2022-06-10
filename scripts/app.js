@@ -1,12 +1,19 @@
 const { Trainer } = require("../scripts/trainer");
-const { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata } = require("../scripts/monsters");
+const { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata, Flareon, Vaporeon, Leafeon } = require("../scripts/monsters");
+const { Pokeball } = require("./pokeball");
+const { catchPokemon } = require("./catch");
 
+const testTrainer = new Trainer("Keith", Pokeball);
+const testEnemy = new Trainer("Bob", Pokeball);
 
-const testTrainer = new Trainer("Keith");
-const testEnemy = new Trainer("Bob");
-const squirtle = new Squirtle('Vincent')
-const charmander = new Charmander('Ian')
+testEnemy.catch(new Charmander("Fireman"));
+testEnemy.catch(new Leafeon("Planty"));
+testEnemy.catch(new Rattata("Joey's Rattata"));
+console.clear();
 
-testTrainer.catch(squirtle)
-testEnemy.catch(charmander)
-testTrainer.fight(testEnemy)
+begin = async () => {
+    await catchPokemon(testTrainer);
+    testTrainer.fight(testEnemy);
+}
+
+begin();

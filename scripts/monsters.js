@@ -20,8 +20,14 @@ class Pokemon {
     }
 
     useMove() {
-        console.log(`${this.name} used ${this.move}.`);
-        return this.attackDamage;
+        let outgoingDamage = this.attackDamage;
+        const critRoll = (Math.random() * 100)
+        if (critRoll > 75) {
+            outgoingDamage *= 2;
+            console.log("A critical hit!!!")
+        }
+        console.log(`${this.name} used ${this.move}. It dealt ${outgoingDamage} damage.`);
+        return outgoingDamage;
     }
 
     hasFainted() {
@@ -78,6 +84,8 @@ class Grass extends Pokemon {
 class Charmander extends Fire {
     constructor(name) {
         super(name);
+        this.attackDamage = 18;
+        this.hitPoints = 40;
         this.move = "ember"
     }
 }
@@ -85,6 +93,8 @@ class Charmander extends Fire {
 class Squirtle extends Water {
   constructor(name) {
     super(name);
+    this.attackDamage = 16;
+    this.hitPoints = 46;
     this.move = "water gun";
   }
 }
@@ -93,6 +103,8 @@ class Squirtle extends Water {
 class Bulbasaur extends Grass {
   constructor(name) {
     super(name);
+    this.attackDamage = 14;
+    this.hitPoints = 54;
     this.move = "vine whip";
   }
 }
@@ -100,8 +112,37 @@ class Bulbasaur extends Grass {
 class Rattata extends Pokemon {
   constructor(name) {
     super(name);
+    this.attackDamage = 15;
+    this.hitPoints = 50;
     this.move = "round-house kick";
   }
 }
 
-module.exports = { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata }
+class Vaporeon extends Water {
+    constructor(name) {
+      super(name);
+      this.attackDamage = 19;
+      this.hitPoints = 70;
+      this.move = "hydro pump";
+    }
+}
+
+class Flareon extends Fire {
+    constructor(name) {
+      super(name);
+      this.attackDamage = 20;
+      this.hitPoints = 65;
+      this.move = "fire blast";
+    }
+}
+
+class Leafeon extends Grass {
+    constructor(name) {
+      super(name);
+      this.attackDamage = 17;
+      this.hitPoints = 65;
+      this.move = "giga drain";
+    }
+}
+
+module.exports = { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata, Vaporeon, Leafeon, Flareon }
