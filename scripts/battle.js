@@ -41,61 +41,78 @@ function instantiateBattle(player, enemyPlayer) {
 async function beginBattle(playerPokemon, enemyPokemon) {
   let playerTurn = true;
   let hasEscaped = false;
-  console.log(`Your opponent sent out ${enemyPokemon.name.toUpperCase()}!`);
+  console.log(
+    `Your opponent sent out ${enemyPokemon.name.toUpperCase()}! A ${
+      enemyPokemon.type
+    } type pokemon...`
+  );
 
-   while (!playerPokemon.hasFainted() && !enemyPokemon.hasFainted() && hasEscaped === false) {
+  while (
+    !playerPokemon.hasFainted() &&
+    !enemyPokemon.hasFainted() &&
+    hasEscaped === false
+  ) {
     if (playerTurn) {
-        await inquirer
-            .prompt([
-            {
-                type: "list",
-                name: "choice",
-                message: "What do you want to do?",
-                choices: ["Attack", "Run"],
-            },
-            ])
-            .then((userInput) => {
-                if (userInput.choice === "Attack") {
-                playerTurn = takeTurn(playerPokemon, enemyPokemon, playerTurn);
-                } else if (userInput.choice === "Run") {
-                    console.log("You got away safely.");
-                    hasEscaped = true;
-                }
-            })
-            .catch((error) => {
-            if (error.isTtyError) {
-                console.log("uh oh");
-            } else {
-                console.log("uh oh again");
-            }
-            });
+      await inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "choice",
+            message: "What do you want to do?",
+            choices: [
+              `Attack with ${playerPokemon.move}`,
+              `Attack with ${playerPokemon.secdonaryMove}`,
+              "Run",
+            ],
+          },
+        ])
+        .then((userInput) => {
+          if (userInput.choice === `Attack with ${playerPokemon.move}`) {
+            playerTurn = takeTurn(playerPokemon, enemyPokemon, playerTurn);
+          }
+          if (
+            userInput.choice === `Attack with ${playerPokemon.secondaryMove}`
+          ) {
+            playerTurn = takeTurn(playerPokemon, enemyPokemon, playerTurn);
+          } else if (userInput.choice === "Run") {
+            console.log("You got away safely.");
+            hasEscaped = true;
+          }
+        })
+        .catch((error) => {
+          if (error.isTtyError) {
+            console.log("uh oh");
+          } else {
+            console.log("uh oh again");
+          }
+        });
     } else {
-        await inquirer
-            .prompt([
-            {
-                type: "list",
-                name: "choice",
-                message: "It's the enemy's turn.",
-                choices: ["OK"],
-            },
-            ])
-            .then((userInput) => {
-                playerTurn = takeTurn(enemyPokemon, playerPokemon, playerTurn);
-            })
-            .catch((error) => {
-            if (error.isTtyError) {
-                console.log("uh oh");
-            } else {
-                console.log("uh oh again");
-            }
-            });
+      await inquirer
+        .prompt([
+          {
+            type: "list",
+            name: "choice",
+            message: "It's the enemy's turn.",
+            choices: ["OK"],
+          },
+        ])
+        .then((userInput) => {
+          playerTurn = takeTurn(enemyPokemon, playerPokemon, playerTurn);
+        })
+        .catch((error) => {
+          if (error.isTtyError) {
+            console.log("uh oh");
+          } else {
+            console.log("uh oh again");
+          }
+        });
     }
   }
   if (playerPokemon.hasFainted()) {
-    console.log(`You Lost!`)
-  } 
+    console.log(`You Lost!`);
+  }
   if (enemyPokemon.hasFainted()) {
-    console.log(`You Won!`)
+    console.log(`You Won!`);
   }
 }
 
@@ -107,7 +124,7 @@ function takeTurn(attacker, defender, playerTurn) {
   } else {
     defender.takeDamage(attacker.useMove());
   }
-  console.log(`${defender.name} has ${defender.hitPoints}HP remaining`)
+  console.log(`${defender.name} has ${defender.hitPoints}HP remaining`);
   return !playerTurn;
 }
 
