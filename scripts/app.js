@@ -6,9 +6,9 @@ const { catchPokemon } = require("./catch");
 const testTrainer = new Trainer("Keith", Pokeball);
 const testEnemy = new Trainer("Bob", Pokeball);
 
-testEnemy.catch(new Charmander("Fireman"));
+//testEnemy.catch(new Charmander("Fireman"));
 testEnemy.catch(new Leafeon("Planty"));
-testEnemy.catch(new Rattata("Joey's Rattata"));
+//testEnemy.catch(new Rattata("Joey's Rattata"));
 console.clear();
 
 begin = async () => {

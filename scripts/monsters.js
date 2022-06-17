@@ -4,7 +4,13 @@ class Pokemon {
     this.type = "normal";
     this.hitPoints = 100;
     this.attackDamage = 10;
-    this.move = "tackle";
+    this.moves = {
+      tackle: {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      },
+    };
   }
 
   isEffectiveAgainst(enemy) {
@@ -19,16 +25,32 @@ class Pokemon {
     this.hitPoints -= damage;
   }
 
-  useMove() {
-    let outgoingDamage = this.attackDamage;
-    const critRoll = Math.random() * 100;
-    if (critRoll > 75) {
-      outgoingDamage *= 2;
-      console.log("A critical hit!!!");
+  useMove(selectedMove, attacker, defender) {
+    let baseDamage = this.attackDamage;
+    let critDamage = 0;
+    let effectiveTypeDamage = 0;
+    let outgoingDamage = 0;
+    if (defender.isWeakTo(attacker.moves[selectedMove])) {
+      effectiveTypeDamage = baseDamage * 0.25;
     }
-    console.log(
-      `${this.name} used ${this.move}. It dealt ${outgoingDamage} damage.`
-    );
+    if (defender.isEffectiveAgainst(attacker.moves[selectedMove])) {
+      effectiveTypeDamage = baseDamage * -0.25;
+    }
+    const critRoll = Math.random() * 100;
+    if (critRoll > 85) {
+      critDamage = baseDamage * 0.5;
+      outgoingDamage = Math.round(
+        baseDamage + critDamage + effectiveTypeDamage
+      );
+      console.log(
+        `${this.name} used ${this.moves[selectedMove].name} and landed a critical hit!!! It dealt ${outgoingDamage} damage!`
+      );
+    } else {
+      outgoingDamage = Math.round(baseDamage + effectiveTypeDamage);
+      console.log(
+        `${this.name} used ${this.moves[selectedMove].name}. It dealt ${outgoingDamage} damage!`
+      );
+    }
     return outgoingDamage;
   }
 
@@ -88,8 +110,13 @@ class Charmander extends Fire {
     super(name);
     this.attackDamage = 17;
     this.hitPoints = 40;
-    this.move = "ember";
-    this.secondaryMove = "vine whip";
+    this.moves = {
+      ember: {
+        name: "ember",
+        type: "fire",
+        strength: "basic",
+      },
+    };
   }
 }
 
@@ -98,8 +125,13 @@ class Squirtle extends Water {
     super(name);
     this.attackDamage = 16;
     this.hitPoints = 46;
-    this.move = "water gun";
-    this.secondaryMove = "ember";
+    this.moves = {
+      waterGun: {
+        name: "water gun",
+        type: "water",
+        strength: "basic",
+      },
+    };
   }
 }
 
@@ -108,8 +140,13 @@ class Bulbasaur extends Grass {
     super(name);
     this.attackDamage = 14;
     this.hitPoints = 54;
-    this.move = "vine whip";
-    this.secondaryMove = "water gun";
+    this.moves = {
+      vineWhip: {
+        name: "vine whip",
+        type: "grass",
+        strength: "basic",
+      },
+    };
   }
 }
 
@@ -118,8 +155,18 @@ class Rattata extends Pokemon {
     super(name);
     this.attackDamage = 15;
     this.hitPoints = 50;
-    this.move = "tackle";
-    this.powerMove = "round-house kick";
+    this.moves = {
+      tackle: {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      },
+      roundHouseKick: {
+        name: "round-house kick",
+        type: "normal",
+        strength: "power",
+      },
+    };
   }
 }
 
@@ -128,7 +175,13 @@ class Vaporeon extends Water {
     super(name);
     this.attackDamage = 16;
     this.hitPoints = 46;
-    this.move = "hydro pump";
+    this.moves = {
+      hydroPump: {
+        name: "hydro pump",
+        type: "water",
+        strength: "power",
+      },
+    };
   }
 }
 
@@ -137,7 +190,13 @@ class Flareon extends Fire {
     super(name);
     this.attackDamage = 17;
     this.hitPoints = 40;
-    this.move = "fire blast";
+    this.moves = {
+      fireBlast: {
+        name: "fire blast",
+        type: "fire",
+        strength: "power",
+      },
+    };
   }
 }
 
@@ -146,7 +205,13 @@ class Leafeon extends Grass {
     super(name);
     this.attackDamage = 14;
     this.hitPoints = 54;
-    this.move = "giga drain";
+    this.moves = {
+      gigaDrain: {
+        name: "giga drain",
+        type: "grass",
+        strength: "power",
+      },
+    };
   }
 }
 

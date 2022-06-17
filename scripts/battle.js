@@ -53,39 +53,21 @@ async function beginBattle(playerPokemon, enemyPokemon) {
     hasEscaped === false
   ) {
     if (playerTurn) {
-      await inquirer
-        .prompt([
-          {
-            type: "list",
-            name: "choice",
-            message: "What do you want to do?",
-            choices: [
-              `Attack with ${playerPokemon.move}`,
-              `Attack with ${playerPokemon.secdonaryMove}`,
-              "Run",
-            ],
-          },
-        ])
-        .then((userInput) => {
-          if (userInput.choice === `Attack with ${playerPokemon.move}`) {
-            playerTurn = takeTurn(playerPokemon, enemyPokemon, playerTurn);
-          }
-          if (
-            userInput.choice === `Attack with ${playerPokemon.secondaryMove}`
-          ) {
-            playerTurn = takeTurn(playerPokemon, enemyPokemon, playerTurn);
-          } else if (userInput.choice === "Run") {
-            console.log("You got away safely.");
-            hasEscaped = true;
-          }
-        })
-        .catch((error) => {
-          if (error.isTtyError) {
-            console.log("uh oh");
-          } else {
-            console.log("uh oh again");
-          }
-        });
+      const userInput = await inquirer.prompt([
+        {
+          type: "list",
+          name: "choice",
+          message: "What do you want to do?",
+          choices: [`Attack`, "Run"],
+        },
+      ]);
+
+      if (userInput.choice === `Attack`) {
+        playerTurn = await takeTurn(playerPokemon, enemyPokemon, playerTurn);
+      } else if (userInput.choice === "Run") {
+        console.log("You got away safely.");
+        hasEscaped = true;
+      }
     } else {
       await inquirer
         .prompt([
@@ -116,14 +98,25 @@ async function beginBattle(playerPokemon, enemyPokemon) {
   }
 }
 
-function takeTurn(attacker, defender, playerTurn) {
-  if (defender.isWeakTo(attacker)) {
-    defender.takeDamage(attacker.useMove() * 1.25);
-  } else if (defender.isEffectiveAgainst(attacker)) {
-    defender.takeDamage(attacker.useMove() * 0.75);
+async function takeTurn(attacker, defender, playerTurn) {
+  const availableMoves = Object.keys(attacker.moves);
+  let selectedMove;
+  if (playerTurn) {
+    const desiredMove = await inquirer.prompt([
+      {
+        type: "list",
+        name: "choice",
+        message: `What move would you like to tell ${attacker.name} to use?`,
+        choices: [...availableMoves],
+      },
+    ]);
+    selectedMove = desiredMove.choice;
   } else {
-    defender.takeDamage(attacker.useMove());
+    randomMove = Math.floor(Math.random() * availableMoves.length);
+    selectedMove = availableMoves[randomMove];
   }
+
+  defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));
   console.log(`${defender.name} has ${defender.hitPoints}HP remaining`);
   return !playerTurn;
 }
