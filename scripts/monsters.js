@@ -33,7 +33,10 @@ class Pokemon {
     let outgoingDamage = 0;
 
     const accuracy = Math.random() * 100;
-    if (selectedMove.strength === "power" && accuracy < 20) {
+    if (
+      (selectedMove.strength === "power" && accuracy < 20) ||
+      (selectedMove.strength === "basic" && accuracy < 5)
+    ) {
       console.log(
         `${attacker.name} tried to use ${selectedMove.name} against ${defender.name} but missed`
       );
