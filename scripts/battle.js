@@ -110,14 +110,22 @@ async function takeTurn(attacker, defender, playerTurn) {
         choices: [...availableMoves],
       },
     ]);
-    selectedMove = desiredMove.choice;
+    selectedMove = attacker.moves[desiredMove.choice];
   } else {
     randomMove = Math.floor(Math.random() * availableMoves.length);
-    selectedMove = availableMoves[randomMove];
+    selectedMove = attacker.moves[availableMoves[randomMove]];
   }
 
   defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));
+  if (defender.hitPoints < 0) defender.hitPoints = 0;
+
   console.log(`${defender.name} has ${defender.hitPoints}HP remaining`);
+  if (defender.hitPoints < 15 && defender.hitPoints > 0) {
+    console.log(`and is looking very tired.`);
+  }
+  if (defender.hitPoints === 0) {
+    console.log(`and has fainted...`);
+  }
   return !playerTurn;
 }
 
