@@ -16,24 +16,6 @@ async function instantiateBattle(player, enemyPlayer) {
       enemyChoices.push(inspectedPokeball.storage);
   }
 
-  await inquirer
-    .prompt([
-      {
-        type: "list",
-        name: "ready",
-        message: "Are you ready to take on your opponent?",
-        choices: ["Let's do it!"],
-      },
-    ])
-    .then((answer) => {
-      console.log(
-        `You and your opponent step up ready to battle your pokemon, your hand rests over your belt of pokeballs...`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-
   inquirer
     .prompt([
       {
@@ -77,12 +59,14 @@ async function beginBattle(playerPokemon, enemyPokemon) {
           type: "list",
           name: "choice",
           message: "What do you want to do?",
-          choices: [`Attack`, "Run"],
+          choices: [`Attack`, `Swap out ${playerPokemon.name}`, "Run"],
         },
       ]);
 
       if (userInput.choice === `Attack`) {
         playerTurn = await takeTurn(playerPokemon, enemyPokemon, playerTurn);
+      }
+      if (userInput.choice === `Swap out ${playerPokemon.name}`) {
       } else if (userInput.choice === "Run") {
         console.log("You got away safely.");
         hasEscaped = true;
@@ -118,7 +102,7 @@ async function beginBattle(playerPokemon, enemyPokemon) {
 }
 
 async function takeTurn(attacker, defender, playerTurn) {
-  console.clear()
+  console.clear();
   const availableMoves = Object.keys(attacker.moves);
 
   let selectedMove;
@@ -139,10 +123,10 @@ async function takeTurn(attacker, defender, playerTurn) {
       const randomMove = Math.floor(Math.random() * availableMoves.length);
       let testMove = attacker.moves[availableMoves[randomMove]];
       if (attacker.useMove(testMove, attacker, defender) > bestMove) {
-        selectedMove = testMove
+        selectedMove = testMove;
       }
-      count--
-      console.clear()
+      count--;
+      console.clear();
     }
   }
 
