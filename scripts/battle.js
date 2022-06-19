@@ -1,4 +1,5 @@
 const inquirer = require("inquirer");
+const { test } = require("picomatch");
 
 async function instantiateBattle(player, enemyPlayer) {
   playerChoices = [];
@@ -132,8 +133,17 @@ async function takeTurn(attacker, defender, playerTurn) {
     ]);
     selectedMove = attacker.moves[desiredMove.choice];
   } else {
-    randomMove = Math.floor(Math.random() * availableMoves.length);
-    selectedMove = attacker.moves[availableMoves[randomMove]];
+    let count = 10;
+    let bestMove = 0;
+    while (count > 0) {
+      const randomMove = Math.floor(Math.random() * availableMoves.length);
+      let testMove = attacker.moves[availableMoves[randomMove]];
+      if (attacker.useMove(testMove, attacker, defender) > bestMove) {
+        selectedMove = testMove
+      }
+      count--
+      console.clear()
+    }
   }
 
   defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));
