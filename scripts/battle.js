@@ -100,7 +100,7 @@ async function beginBattle(playerPokemon, enemyPokemon) {
 
 async function takeTurn(attacker, defender, playerTurn) {
   const availableMoves = Object.keys(attacker.moves);
-  let selectedMove;
+  let selectedMove;28
   if (playerTurn) {
     const desiredMove = await inquirer.prompt([
       {

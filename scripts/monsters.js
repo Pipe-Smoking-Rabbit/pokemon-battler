@@ -34,8 +34,8 @@ class Pokemon {
 
     const accuracy = Math.random() * 100;
     if (
-      (selectedMove.strength === "power" && accuracy < 20) ||
-      (selectedMove.strength === "basic" && accuracy < 5)
+      (selectedMove.strength === "power" && accuracy < 25) ||
+      (selectedMove.strength === "basic" && accuracy < 10)
     ) {
       console.log(
         `${attacker.name} tried to use ${selectedMove.name} against ${defender.name} but missed`
@@ -46,16 +46,16 @@ class Pokemon {
         attacker.type !== selectedMove.type &&
         selectedMove.type !== "normal"
       ) {
-        baseDamage *= 0.8;
+        baseDamage *= 0.85;
       }
       if (selectedMove.strength === "power") {
         powerMoveBonus = baseDamage * 0.2;
       }
       if (defender.isWeakTo(selectedMove.type)) {
-        effectiveTypeBonus = baseDamage * 0.25;
+        effectiveTypeBonus = baseDamage * 0.33;
       }
       if (defender.isEffectiveAgainst(selectedMove.type)) {
-        effectiveTypeBonus = baseDamage * -0.25;
+        effectiveTypeBonus = baseDamage * -0.33;
       }
       const critRoll = Math.random() * 100;
       if (critRoll > 85) {
@@ -145,6 +145,11 @@ class Charmander extends Fire {
         type: "fire",
         strength: "basic",
       },
+      fireyVines: {
+        name: "firey vines",
+        type: "grass",
+        strength: "basic",
+      },
     };
   }
 }
@@ -165,6 +170,11 @@ class Squirtle extends Water {
         type: "water",
         strength: "basic",
       },
+      hotSteam: {
+        name: "hot steam",
+        type: "fire",
+        strength: "basic",
+      },
     };
   }
 }
@@ -183,6 +193,11 @@ class Bulbasaur extends Grass {
       vineWhip: {
         name: "vine whip",
         type: "grass",
+        strength: "basic",
+      },
+      liquidSap: {
+        name: "liquid sap",
+        type: "water",
         strength: "basic",
       },
     };
