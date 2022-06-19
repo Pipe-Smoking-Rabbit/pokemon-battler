@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 
-function instantiateBattle(player, enemyPlayer) {
+async function instantiateBattle(player, enemyPlayer) {
   playerChoices = [];
   enemyChoices = [];
   for (let i = 0; i < player.belt.length; i++) {
@@ -15,12 +15,30 @@ function instantiateBattle(player, enemyPlayer) {
       enemyChoices.push(inspectedPokeball.storage);
   }
 
+  await inquirer
+    .prompt([
+      {
+        type: "list",
+        name: "ready",
+        message: "Are you ready to take on your opponent?",
+        choices: ["Let's do it!"],
+      },
+    ])
+    .then((answer) => {
+      console.log(
+        `You and your opponent step up ready to battle your pokemon, your hand rests over your belt of pokeballs...`
+      );
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
   inquirer
     .prompt([
       {
         type: "list",
         name: "pokemon",
-        message: "Which pokemon do you choose?",
+        message: "Which pokemon do you choose to send out?",
         choices: playerChoices,
       },
     ])
@@ -99,15 +117,17 @@ async function beginBattle(playerPokemon, enemyPokemon) {
 }
 
 async function takeTurn(attacker, defender, playerTurn) {
+  console.clear()
   const availableMoves = Object.keys(attacker.moves);
-  let selectedMove;28
+
+  let selectedMove;
   if (playerTurn) {
     const desiredMove = await inquirer.prompt([
       {
         type: "list",
         name: "choice",
         message: `What move would you like to tell ${attacker.name} to use?`,
-        choices: [...availableMoves],
+        choices: availableMoves,
       },
     ]);
     selectedMove = attacker.moves[desiredMove.choice];
