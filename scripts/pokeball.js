@@ -33,6 +33,4 @@ class Pokeball {
   }
 }
 
-//Additionally the method can be invoked with no argument. In this case the method should return the stored Pokemon (ready for battle). The `throw` method should  console log something like ("GO pokemonX's name!!") in this scenario. If the ball is empty then the user should be informed.
-
 module.exports = { Pokeball };
