@@ -2,8 +2,8 @@ const inquirer = require("inquirer");
 const { test } = require("picomatch");
 
 async function instantiateBattle(player, enemyPlayer) {
-  playerChoices = [];
-  enemyChoices = [];
+  const playerChoices = [];
+  const enemyChoices = [];
   for (let i = 0; i < player.belt.length; i++) {
     const inspectedPokeball = player.belt[i];
     if (inspectedPokeball.storage !== null) {
@@ -20,15 +20,20 @@ async function instantiateBattle(player, enemyPlayer) {
     .prompt([
       {
         type: "list",
-        name: "pokemon",
+        name: "name",
         message: "Which pokemon do you choose to send out?",
         choices: playerChoices,
       },
     ])
-    .then((selectedPokemon) => {
+    .then((playerPokemons) => {
       randomisedEnemy =
         enemyChoices[Math.floor(Math.random() * enemyChoices.length)];
-      beginBattle(player.getPokemon(selectedPokemon.pokemon), randomisedEnemy);
+      beginBattle(
+        player,
+        player.getPokemon(playerPokemons.name),
+        enemyPlayer,
+        randomisedEnemy
+      );
     })
     .catch((error) => {
       if (error.isTtyError) {
@@ -39,7 +44,13 @@ async function instantiateBattle(player, enemyPlayer) {
     });
 }
 
-async function beginBattle(playerPokemon, enemyPokemon) {
+async function beginBattle(
+  player,
+  startingPlayerPokemon,
+  enemyPlayer,
+  enemyPokemon
+) {
+  let playerPokemon = startingPlayerPokemon;
   let playerTurn = true;
   let hasEscaped = false;
   console.log(
@@ -54,20 +65,40 @@ async function beginBattle(playerPokemon, enemyPokemon) {
     hasEscaped === false
   ) {
     if (playerTurn) {
-      const userInput = await inquirer.prompt([
+      const playerMove = await inquirer.prompt([
         {
           type: "list",
           name: "choice",
           message: "What do you want to do?",
-          choices: [`Attack`, "Run"],
+          choices: [`Attack`, `Change Pokemon`, "Run"],
         },
       ]);
 
-      if (userInput.choice === `Attack`) {
+      if (playerMove.choice === `Attack`) {
         playerTurn = await takeTurn(playerPokemon, enemyPokemon, playerTurn);
       }
-      if (userInput.choice === `Swap out ${playerPokemon.name}`) {
-      } else if (userInput.choice === "Run") {
+      if (playerMove.choice === `Change Pokemon`) {
+        playerTurn = false;
+        const playerChoices = [];
+        player.belt.forEach(({ storage }) => {
+          if (storage) {
+            if (storage.hitPoints > 0) {
+              playerChoices.push(storage);
+            }
+          }
+        });
+        player.catch(playerPokemon);
+
+        const newPokemon = await inquirer.prompt([
+          {
+            type: "list",
+            name: "name",
+            message: "Which pokemon do you choose to send out instead?",
+            choices: playerChoices,
+          },
+        ]);
+        playerPokemon = player.getPokemon(newPokemon.name);
+      } else if (playerMove.choice === "Run") {
         console.log("You got away safely.");
         hasEscaped = true;
       }
@@ -77,11 +108,11 @@ async function beginBattle(playerPokemon, enemyPokemon) {
           {
             type: "list",
             name: "choice",
-            message: "It's the enemy's turn.",
-            choices: ["OK"],
+            message: `It's the enemy's turn. They shout their command to ${enemyPokemon.name}`,
+            choices: [`"Brace yourself ${playerPokemon.name}"`],
           },
         ])
-        .then((userInput) => {
+        .then(() => {
           playerTurn = takeTurn(enemyPokemon, playerPokemon, playerTurn);
         })
         .catch((error) => {
@@ -94,10 +125,10 @@ async function beginBattle(playerPokemon, enemyPokemon) {
     }
   }
   if (playerPokemon.hasFainted()) {
-    console.log(`You Lost!`);
+    console.log(`\nYou Lost!\n`);
   }
   if (enemyPokemon.hasFainted()) {
-    console.log(`You Won!`);
+    console.log(`\nYou Won!\n`);
   }
 }
 
@@ -136,12 +167,15 @@ async function takeTurn(attacker, defender, playerTurn) {
   defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));
   if (defender.hitPoints < 0) defender.hitPoints = 0;
 
-  console.log(`${defender.name} has ${defender.hitPoints}HP remaining`);
-  if (defender.hitPoints < 15 && defender.hitPoints > 0) {
-    console.log(`and is looking very tired.`);
+  console.log(`\n${defender.name} has ${defender.hitPoints}HP remaining`);
+  if (defender.hitPoints < 20 && defender.hitPoints > 10) {
+    console.log(`...and looks tired.`);
+  }
+  if (defender.hitPoints < 10 && defender.hitPoints > 0) {
+    console.log(`...and looks badly wounded.`);
   }
   if (defender.hitPoints === 0) {
-    console.log(`and has fainted...`);
+    console.log(`...and has fainted`);
   }
   return !playerTurn;
 }

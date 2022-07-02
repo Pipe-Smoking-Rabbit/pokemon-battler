@@ -23,7 +23,9 @@ class Pokeball {
             this.storage.type
           } type pokemon, bursts out ready to fight.\nGO ${this.contains().toUpperCase()}!!`
         );
-        return this.storage;
+        const thrownPokemon = this.storage;
+        this.storage = null;
+        return thrownPokemon;
       } else {
         console.log(`Sorry, that pokeball is empty.`);
       }

@@ -32,13 +32,22 @@ class Pokemon {
     let powerMoveBonus = 0;
     let outgoingDamage = 0;
     let consoleMessage = "";
+    let flavour = "";
+
+    const flavourPool = [
+      `centres their concentration before letting loose`,
+      `sets their stance firmly, then uses`,
+      `receives their command and launches`,
+      `rushes forward and unleashes`,
+    ];
+    flavour = flavourPool[Math.floor(Math.random() * flavourPool.length)];
 
     const accuracy = Math.random() * 100;
     if (
       (selectedMove.strength === "power" && accuracy < 25) ||
       (selectedMove.strength === "basic" && accuracy < 10)
     ) {
-      consoleMessage += `${attacker.name} tried to use ${selectedMove.name} against ${defender.name} but completely missed`;
+      consoleMessage += `${attacker.name} ${flavour} ${selectedMove.name} against ${defender.name}... but completely misses, leaving them looking a bit embarressed.`;
       console.log(consoleMessage);
       return 0;
     } else {
@@ -48,28 +57,28 @@ class Pokemon {
       const critRoll = Math.random() * 100;
       if (critRoll > 85) {
         critDamage = baseDamage * 0.5;
-        consoleMessage += `${this.name} used ${selectedMove.name} and landed a critical hit!!!`;
+        consoleMessage += `${this.name} ${flavour} ${selectedMove.name}, landing a critical hit!!!`;
       } else {
         outgoingDamage = Math.round(
           baseDamage + effectiveTypeBonus + powerMoveBonus
         );
-        consoleMessage += `${this.name} used ${selectedMove.name}...`;
+        consoleMessage += `${this.name} ${flavour} ${selectedMove.name}, striking their opponent firmly!`;
       }
       if (selectedMove.strength === "power") {
         powerMoveBonus = baseDamage * 0.2;
       }
       if (defender.isWeakTo(selectedMove.type)) {
         effectiveTypeBonus = baseDamage * 0.33;
-        consoleMessage += `\nThat move type seemed to be very effective against ${defender.name}`;
+        consoleMessage += `\n\n(That move type seemed to be very effective against ${defender.name})`;
       }
       if (defender.isEffectiveAgainst(selectedMove.type)) {
         effectiveTypeBonus = baseDamage * -0.33;
-        consoleMessage += `\nThat move type seemed to be ineffective against ${defender.name}`;
+        consoleMessage += `\n\n(That move type seemed to be rather ineffective against ${defender.name})`;
       }
       outgoingDamage = Math.round(
         baseDamage + critDamage + effectiveTypeBonus + powerMoveBonus
       );
-      consoleMessage += `\n${attacker.name} delt ${outgoingDamage} damage!`;
+      consoleMessage += `\n\n${attacker.name} delt ${outgoingDamage} damage to ${defender.name} with that move!`;
       console.log(consoleMessage);
       return outgoingDamage;
     }
@@ -117,7 +126,7 @@ class Grass extends Pokemon {
     this.type = "grass";
   }
   isEffectiveAgainst(type) {
-    if (type === "water" || type === "electric") return true;
+    if (type === "water") return true;
     return false;
   }
   isWeakTo(type) {
@@ -136,8 +145,47 @@ class Electric extends Pokemon {
     return false;
   }
   isWeakTo(type) {
-    if (type === "ground" || type === "grass") return true;
+    if (type === "ground") return true;
     return false;
+  }
+}
+
+class Ground extends Pokemon {
+  constructor(name) {
+    super(name);
+    this.type = "ground";
+  }
+}
+
+class Flying extends Pokemon {
+  constructor(name) {
+    super(name);
+    this.type = "flying";
+  }
+}
+
+class Fighting extends Pokemon {
+  constructor(name) {
+    super(name);
+    this.type = "fighting";
+  }
+}
+
+class Mankey extends Fighting {
+  constructor(name) {
+    super(name);
+  }
+}
+
+class Pidgey extends Flying {
+  constructor(name) {
+    super(name);
+  }
+}
+
+class Geodude extends Ground {
+  constructor(name) {
+    super(name);
   }
 }
 
@@ -157,8 +205,8 @@ class Pikachu extends Electric {
         type: "electric",
         strength: "basic",
       },
-      "Volt Tackle": {
-        name: "volt tackle",
+      "Storm Strike": {
+        name: "storm strike",
         type: "electric",
         strength: "power",
       },
@@ -187,6 +235,11 @@ class Charmander extends Fire {
         type: "grass",
         strength: "basic",
       },
+      Flamethrower: {
+        name: "flamethrower",
+        type: "fire",
+        strength: "power"
+      }
     };
   }
 }
@@ -212,6 +265,11 @@ class Squirtle extends Water {
         type: "fire",
         strength: "basic",
       },
+      "Hydro pump": {
+        name: "hydro pump",
+        type: "water",
+        strength: "power"
+      }
     };
   }
 }
@@ -237,6 +295,11 @@ class Bulbasaur extends Grass {
         type: "water",
         strength: "basic",
       },
+      "Trunk Hammer": {
+        name: "trunk hammer",
+        type: "grass",
+        strength: "power"
+      }
     };
   }
 }
