@@ -53,6 +53,7 @@ async function beginBattle(
   let playerPokemon = startingPlayerPokemon;
   let playerTurn = true;
   let hasEscaped = false;
+  let fightOver = false; //this variable will be checked in while loop instead of .hasFainted()
   console.log(
     `Your opponent sent out ${enemyPokemon.name.toUpperCase()}! A ${
       enemyPokemon.type
@@ -123,6 +124,7 @@ async function beginBattle(
           }
         });
     }
+    // logic goes here to determine whether one of the players has run out of available pokemon, and changes fightOver variable to true when condition is met. If pokemon has fainted but there is another available pokemon then fainted pokemon should be caught and another pokemon thrown out to take it's place - fight continues. If Pokemon has fainted with no available substitue - fight is over.
   }
   if (playerPokemon.hasFainted()) {
     console.log(`\nYou Lost!\n`);

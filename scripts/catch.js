@@ -8,6 +8,7 @@ const {
   Leafeon,
   Vaporeon,
   Pikachu,
+  Geodude,
 } = require("./monsters");
 
 async function catchPokemon(trainer) {
@@ -41,13 +42,14 @@ async function catchPokemon(trainer) {
         {
           type: "list",
           name: "choice",
-          message: "Which Pokemon would you like to catch?",
+          message: "What kind of Pokemon would you like to catch?",
           choices: [
             "Rattata",
             "Squirtle",
             "Charmander",
             "Bulbasaur",
             "Pikachu",
+            "Geodude",
             // "Flareon",
             // "Vaporeon",
             // "Leafeon",
@@ -84,6 +86,9 @@ async function catchPokemon(trainer) {
             break;
           case "Bulbasaur":
             trainer.catch(new Bulbasaur(nickname));
+            break;
+          case "Geodude":
+            trainer.catch(new Geodude (nickname));
             break;
           case "Flareon":
             trainer.catch(new Flareon(nickname));

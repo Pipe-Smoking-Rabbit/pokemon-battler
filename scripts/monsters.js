@@ -100,7 +100,7 @@ class Fire extends Pokemon {
     return false;
   }
   isWeakTo(type) {
-    if (type === "water") return true;
+    if (type === "water" || type === "ground") return true;
     return false;
   }
 }
@@ -126,7 +126,7 @@ class Grass extends Pokemon {
     this.type = "grass";
   }
   isEffectiveAgainst(type) {
-    if (type === "water") return true;
+    if (type === "water" || type === "ground") return true;
     return false;
   }
   isWeakTo(type) {
@@ -154,6 +154,14 @@ class Ground extends Pokemon {
   constructor(name) {
     super(name);
     this.type = "ground";
+  }
+  isEffectiveAgainst(type) {
+    if (type === "electric" || type === "fire") return true;
+    return false;
+  }
+  isWeakTo(type) {
+    if (type === "flying" || type === "grass") return true;
+    return false;
   }
 }
 
@@ -186,6 +194,25 @@ class Pidgey extends Flying {
 class Geodude extends Ground {
   constructor(name) {
     super(name);
+    this.attackDamage = 12;
+    this.hitPoints = 66;
+    this.moves = {
+      Tackle: {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      },
+      "Rock Throw": {
+        name: "rock throw",
+        type: "ground",
+        strength: "basic",
+      },
+      "Land Slide": {
+        name: "land slide",
+        type: "ground",
+        strength: "power",
+      },
+    };
   }
 }
 
@@ -382,4 +409,5 @@ module.exports = {
   Vaporeon,
   Leafeon,
   Flareon,
+  Geodude
 };
