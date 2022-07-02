@@ -59,7 +59,7 @@ async function beginBattle(playerPokemon, enemyPokemon) {
           type: "list",
           name: "choice",
           message: "What do you want to do?",
-          choices: [`Attack`, `Swap out ${playerPokemon.name}`, "Run"],
+          choices: [`Attack`, "Run"],
         },
       ]);
 
@@ -117,17 +117,20 @@ async function takeTurn(attacker, defender, playerTurn) {
     ]);
     selectedMove = attacker.moves[desiredMove.choice];
   } else {
-    let count = 10;
+    let count = 100;
     let bestMove = 0;
     while (count > 0) {
       const randomMove = Math.floor(Math.random() * availableMoves.length);
       let testMove = attacker.moves[availableMoves[randomMove]];
       if (attacker.useMove(testMove, attacker, defender) > bestMove) {
         selectedMove = testMove;
+        bestMove = attacker.useMove(testMove, attacker, defender);
+        console.clear();
       }
       count--;
       console.clear();
     }
+    console.clear();
   }
 
   defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));

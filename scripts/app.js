@@ -1,4 +1,5 @@
 const { Trainer } = require("../scripts/trainer");
+const inquirer = require("inquirer");
 const {
   Pokemon,
   Fire,
