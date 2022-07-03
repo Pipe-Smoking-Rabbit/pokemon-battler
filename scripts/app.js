@@ -19,7 +19,7 @@ const { catchPokemon } = require("./catch");
 const testTrainer = new Trainer("Keith", Pokeball);
 const testEnemy = new Trainer("Bob", Pokeball);
 
-testEnemy.catch(new Charmander("Charlizard"));
+// testEnemy.catch(new Charmander("Charlizard"));
 testEnemy.catch(new Bulbasaur("Planty"));
 testEnemy.catch(new Squirtle("Squirty"));
 // testEnemy.catch(new Rattata("Joey's Rattata"));

@@ -62,7 +62,7 @@ class Pokemon {
         outgoingDamage = Math.round(
           baseDamage + effectiveTypeBonus + powerMoveBonus
         );
-        consoleMessage += `${this.name} ${flavour} ${selectedMove.name}, striking their opponent firmly!`;
+        consoleMessage += `${this.name} ${flavour} ${selectedMove.name}, striking ${defender.name} firmly!`;
       }
       if (selectedMove.strength === "power") {
         powerMoveBonus = baseDamage * 0.2;
@@ -257,11 +257,6 @@ class Charmander extends Fire {
         type: "fire",
         strength: "basic",
       },
-      "Firey vines": {
-        name: "firey vines",
-        type: "grass",
-        strength: "basic",
-      },
       Flamethrower: {
         name: "flamethrower",
         type: "fire",
@@ -287,11 +282,6 @@ class Squirtle extends Water {
         type: "water",
         strength: "basic",
       },
-      "Hot Steam": {
-        name: "hot steam",
-        type: "fire",
-        strength: "basic",
-      },
       "Hydro pump": {
         name: "hydro pump",
         type: "water",
@@ -315,11 +305,6 @@ class Bulbasaur extends Grass {
       "Vine Whip": {
         name: "vine whip",
         type: "grass",
-        strength: "basic",
-      },
-      "Liquid Sap": {
-        name: "liquid sap",
-        type: "water",
         strength: "basic",
       },
       "Trunk Hammer": {

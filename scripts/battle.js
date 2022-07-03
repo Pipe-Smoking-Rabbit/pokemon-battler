@@ -53,18 +53,14 @@ async function beginBattle(
   let playerPokemon = startingPlayerPokemon;
   let playerTurn = true;
   let hasEscaped = false;
-  let fightOver = false; //this variable will be checked in while loop instead of .hasFainted()
+  let fightEnded = false;
   console.log(
     `Your opponent sent out ${enemyPokemon.name.toUpperCase()}! A ${
       enemyPokemon.type
     } type pokemon...`
   );
 
-  while (
-    !playerPokemon.hasFainted() &&
-    !enemyPokemon.hasFainted() &&
-    hasEscaped === false
-  ) {
+  while (fightEnded === false && hasEscaped === false) {
     if (playerTurn) {
       const playerMove = await inquirer.prompt([
         {
@@ -88,7 +84,10 @@ async function beginBattle(
             }
           }
         });
-        player.catch(playerPokemon);
+        if (playerChoices.length > 0) player.catch(playerPokemon);
+        else {
+          playerChoices.push("You don't have any other pokemon!");
+        }
 
         const newPokemon = await inquirer.prompt([
           {
@@ -98,7 +97,13 @@ async function beginBattle(
             choices: playerChoices,
           },
         ]);
-        playerPokemon = player.getPokemon(newPokemon.name);
+        if (newPokemon.name === "You don't have any other pokemon!") {
+          console.clear();
+          console.log(
+            `\nYou give up searching your pokeball belt and realise that ${enemyPokemon.name} is about to attack\n`
+          );
+          playerPokemon = playerPokemon;
+        } else playerPokemon = player.getPokemon(newPokemon.name);
       } else if (playerMove.choice === "Run") {
         console.log("You got away safely.");
         hasEscaped = true;
@@ -124,12 +129,35 @@ async function beginBattle(
           }
         });
     }
-    // logic goes here to determine whether one of the players has run out of available pokemon, and changes fightOver variable to true when condition is met. If pokemon has fainted but there is another available pokemon then fainted pokemon should be caught and another pokemon thrown out to take it's place - fight continues. If Pokemon has fainted with no available substitue - fight is over.
+    if (playerPokemon.hasFainted()) {
+      playerPokemon = await substitutePokemon(player, playerPokemon);
+      if (playerPokemon === null) {
+        fightEnded = true;
+      }
+    }
+    if (enemyPokemon.hasFainted()) {
+      const enemyChoices = [];
+      enemyPlayer.belt.forEach(({ storage }) => {
+        if (storage) {
+          if (storage.hitPoints > 0) enemyChoices.push(storage);
+        }
+      });
+      if (enemyChoices.length === 0) {
+        console.log("All of your opponents pokemon have fainted");
+        enemyPokemon = null;
+        fightEnded = true;
+      } else {
+        console.log(`\nYour opponent throws a pokeball, catching ${enemyPokemon.name}, before quickly throwing out another pokemon:`)
+        enemyPokemon =
+          enemyChoices[Math.floor(Math.random() * enemyChoices.length)];
+        console.log(`\n${enemyPokemon.name} (a ${enemyPokemon.type} type) springs forth and prepares to attack!`)
+      }
+    }
   }
-  if (playerPokemon.hasFainted()) {
+  if (playerPokemon === null) {
     console.log(`\nYou Lost!\n`);
   }
-  if (enemyPokemon.hasFainted()) {
+  if (enemyPokemon === null) {
     console.log(`\nYou Won!\n`);
   }
 }
@@ -170,7 +198,7 @@ async function takeTurn(attacker, defender, playerTurn) {
   if (defender.hitPoints < 0) defender.hitPoints = 0;
 
   console.log(`\n${defender.name} has ${defender.hitPoints}HP remaining`);
-  if (defender.hitPoints < 20 && defender.hitPoints > 10) {
+  if (defender.hitPoints < 20 && defender.hitPoints >= 10) {
     console.log(`...and looks tired.`);
   }
   if (defender.hitPoints < 10 && defender.hitPoints > 0) {
@@ -182,4 +210,30 @@ async function takeTurn(attacker, defender, playerTurn) {
   return !playerTurn;
 }
 
+async function substitutePokemon(trainer, faintedPokemon) {
+  const playerChoices = [];
+  trainer.belt.forEach(({ storage }) => {
+    if (storage) {
+      if (storage.hitPoints > 0) {
+        playerChoices.unshift(storage);
+      }
+    }
+  });
+  trainer.catch(faintedPokemon);
+  if (playerChoices.length === 0) console.log("All your pokemon have fainted");
+  else {
+    const substitue = await inquirer.prompt([
+      {
+        type: "list",
+        name: "choice",
+        message: `\n${faintedPokemon.name} is no longer fit to fight. Which pokemon would you like to pick to take their place?`,
+        choices: playerChoices,
+      },
+    ]);
+    return trainer.getPokemon(substitue.choice);
+  }
+  return null;
+}
+
 module.exports = { instantiateBattle, takeTurn };
+
