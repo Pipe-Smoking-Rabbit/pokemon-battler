@@ -24,6 +24,7 @@ async function catchPokemon(trainer) {
       },
     ])
     .then((userInput) => {
+      console.clear()
       numberOfPokemon = userInput.choice;
     })
     .catch((error) => {
@@ -57,6 +58,7 @@ async function catchPokemon(trainer) {
         },
       ])
       .then((userInput) => {
+        console.clear()
         species = userInput.choice;
       });
 
@@ -70,6 +72,7 @@ async function catchPokemon(trainer) {
         },
       ])
       .then((inputName) => {
+        console.clear()
         nickname = inputName.input;
         switch (species) {
           case "Rattata":

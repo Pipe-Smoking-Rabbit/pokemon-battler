@@ -12,16 +12,16 @@ class Pokeball {
     if (target !== undefined) {
       if (this.isEmpty()) {
         this.storage = target;
-        console.log(`You caught ${target.name}!`);
+        console.log(`\nYou caught ${target.name}!\n`);
       } else {
         console.log(`There was no room to capture ${target.name}.`);
       }
     } else {
       if (!this.isEmpty()) {
         console.log(
-          `You throw your pokeball and ${this.contains()}, a ${
+          `\nYou throw your pokeball and ${this.contains()}, a ${
             this.storage.type
-          } type pokemon, bursts out ready to fight.\nGO ${this.contains().toUpperCase()}!!`
+          } type pokemon, bursts out ready to fight.\n"GO ${this.contains().toUpperCase()}!!"\n`
         );
         const thrownPokemon = this.storage;
         this.storage = null;

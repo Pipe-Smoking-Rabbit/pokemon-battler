@@ -26,6 +26,7 @@ async function instantiateBattle(player, enemyPlayer) {
       },
     ])
     .then((playerPokemons) => {
+      console.clear()
       randomisedEnemy =
         enemyChoices[Math.floor(Math.random() * enemyChoices.length)];
       beginBattle(
@@ -55,9 +56,9 @@ async function beginBattle(
   let hasEscaped = false;
   let fightEnded = false;
   console.log(
-    `Your opponent sent out ${enemyPokemon.name.toUpperCase()}! A ${
+    `\nYour opponent sent out ${enemyPokemon.name.toUpperCase()}! A ${
       enemyPokemon.type
-    } type pokemon...`
+    } type pokemon...\n`
   );
 
   while (fightEnded === false && hasEscaped === false) {
@@ -143,14 +144,18 @@ async function beginBattle(
         }
       });
       if (enemyChoices.length === 0) {
-        console.log("All of your opponents pokemon have fainted");
+        console.log(`Your opponent throws out a pokeball to catch ${enemyPokemon.name}. Glumly, they bow their head, with no other pokemon left in their pokebelt.`);
         enemyPokemon = null;
         fightEnded = true;
       } else {
-        console.log(`\nYour opponent throws a pokeball, catching ${enemyPokemon.name}, before quickly throwing out another pokemon:`)
+        console.log(
+          `\nYour opponent throws a pokeball, catching ${enemyPokemon.name}`
+        );
         enemyPokemon =
           enemyChoices[Math.floor(Math.random() * enemyChoices.length)];
-        console.log(`\n${enemyPokemon.name} (a ${enemyPokemon.type} type) springs forth and prepares to attack!`)
+        console.log(
+          `followed by another pokeball, which sails through the air and bursts open, ${enemyPokemon.name} (a ${enemyPokemon.type} type) springs forth and prepares to attack ${playerPokemon.name}!\n`
+        );
       }
     }
   }
@@ -186,31 +191,29 @@ async function takeTurn(attacker, defender, playerTurn) {
       if (attacker.useMove(testMove, attacker, defender) > bestMove) {
         selectedMove = testMove;
         bestMove = attacker.useMove(testMove, attacker, defender);
-        console.clear();
       }
       count--;
-      console.clear();
     }
-    console.clear();
   }
 
   defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));
   if (defender.hitPoints < 0) defender.hitPoints = 0;
 
-  console.log(`\n${defender.name} has ${defender.hitPoints}HP remaining`);
+  console.log(`\n${defender.name} has ${defender.hitPoints}HP remaining\n`);
   if (defender.hitPoints < 20 && defender.hitPoints >= 10) {
-    console.log(`...and looks tired.`);
+    console.log(`...and looks quite tired.\n`);
   }
   if (defender.hitPoints < 10 && defender.hitPoints > 0) {
-    console.log(`...and looks badly wounded.`);
+    console.log(`...and looks badly wounded.\n`);
   }
   if (defender.hitPoints === 0) {
-    console.log(`...and has fainted`);
+    console.log(`...and has fainted\n`);
   }
   return !playerTurn;
 }
 
 async function substitutePokemon(trainer, faintedPokemon) {
+  console.clear()
   const playerChoices = [];
   trainer.belt.forEach(({ storage }) => {
     if (storage) {
@@ -219,21 +222,22 @@ async function substitutePokemon(trainer, faintedPokemon) {
       }
     }
   });
+  console.log(`\nYou throw a pokeball towards your fainted pokemon...\n`)
   trainer.catch(faintedPokemon);
-  if (playerChoices.length === 0) console.log("All your pokemon have fainted");
+  if (playerChoices.length === 0) console.log("\nAll your pokemon have fainted\n");
   else {
     const substitue = await inquirer.prompt([
       {
         type: "list",
         name: "choice",
-        message: `\n${faintedPokemon.name} is no longer fit to fight. Which pokemon would you like to pick to take their place?`,
+        message: `${faintedPokemon.name} is no longer fit to fight. Which pokemon would you like to pick to take their place?`,
         choices: playerChoices,
       },
     ]);
+    console.clear();
     return trainer.getPokemon(substitue.choice);
   }
   return null;
 }
 
 module.exports = { instantiateBattle, takeTurn };
-

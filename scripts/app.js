@@ -38,8 +38,9 @@ begin = async () => {
       },
     ])
     .then((answer) => {
+      console.clear()
       console.log(
-        `You and your opponent step up ready to battle your pokemon, your hand rests over your belt of pokeballs...`
+        `\nYou and your opponent step up ready to battle your pokemon, your hand rests over your belt of pokeballs...\n`
       );
     })
     .catch((error) => {

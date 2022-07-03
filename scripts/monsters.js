@@ -26,6 +26,7 @@ class Pokemon {
   }
 
   useMove(selectedMove, attacker, defender) {
+    console.clear()
     let baseDamage = this.attackDamage;
     let critDamage = 0;
     let effectiveTypeBonus = 0;
@@ -47,7 +48,7 @@ class Pokemon {
       (selectedMove.strength === "power" && accuracy < 25) ||
       (selectedMove.strength === "basic" && accuracy < 10)
     ) {
-      consoleMessage += `${attacker.name} ${flavour} ${selectedMove.name} against ${defender.name}... but completely misses, leaving them looking a bit embarressed.`;
+      consoleMessage += `\n${attacker.name} ${flavour} ${selectedMove.name} against ${defender.name}... but completely misses... How embarrasing!\n`;
       console.log(consoleMessage);
       return 0;
     } else {
@@ -57,28 +58,28 @@ class Pokemon {
       const critRoll = Math.random() * 100;
       if (critRoll > 85) {
         critDamage = baseDamage * 0.5;
-        consoleMessage += `${this.name} ${flavour} ${selectedMove.name}, landing a critical hit!!!`;
+        consoleMessage += `\n${this.name} ${flavour} ${selectedMove.name}, landing a critical hit!!!\n`;
       } else {
         outgoingDamage = Math.round(
           baseDamage + effectiveTypeBonus + powerMoveBonus
         );
-        consoleMessage += `${this.name} ${flavour} ${selectedMove.name}, striking ${defender.name} firmly!`;
+        consoleMessage += `\n${this.name} ${flavour} ${selectedMove.name}, striking ${defender.name} firmly!\n`;
       }
       if (selectedMove.strength === "power") {
         powerMoveBonus = baseDamage * 0.2;
       }
       if (defender.isWeakTo(selectedMove.type)) {
         effectiveTypeBonus = baseDamage * 0.33;
-        consoleMessage += `\n\n(That move type seemed to be very effective against ${defender.name})`;
+        consoleMessage += `\n(That move type seemed to be very effective against ${defender.name})\n`;
       }
       if (defender.isEffectiveAgainst(selectedMove.type)) {
         effectiveTypeBonus = baseDamage * -0.33;
-        consoleMessage += `\n\n(That move type seemed to be rather ineffective against ${defender.name})`;
+        consoleMessage += `\n(That move type seemed to be rather ineffective against ${defender.name})\n`;
       }
       outgoingDamage = Math.round(
         baseDamage + critDamage + effectiveTypeBonus + powerMoveBonus
       );
-      consoleMessage += `\n\n${attacker.name} delt ${outgoingDamage} damage to ${defender.name} with that move!`;
+      consoleMessage += `\n${attacker.name} delt ${outgoingDamage} damage with that move!\n`;
       console.log(consoleMessage);
       return outgoingDamage;
     }
