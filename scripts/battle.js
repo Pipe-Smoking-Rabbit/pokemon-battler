@@ -26,7 +26,7 @@ async function instantiateBattle(player, enemyPlayer) {
       },
     ])
     .then((playerPokemons) => {
-      console.clear()
+      console.clear();
       randomisedEnemy =
         enemyChoices[Math.floor(Math.random() * enemyChoices.length)];
       beginBattle(
@@ -85,8 +85,10 @@ async function beginBattle(
             }
           }
         });
-        if (playerChoices.length > 0) player.catch(playerPokemon);
-        else {
+        if (playerChoices.length > 0) {
+          console.clear();
+          player.catch(playerPokemon);
+        } else {
           playerChoices.push("You don't have any other pokemon!");
         }
 
@@ -104,7 +106,10 @@ async function beginBattle(
             `\nYou give up searching your pokeball belt and realise that ${enemyPokemon.name} is about to attack\n`
           );
           playerPokemon = playerPokemon;
-        } else playerPokemon = player.getPokemon(newPokemon.name);
+        } else {
+          console.clear();
+          playerPokemon = player.getPokemon(newPokemon.name);
+        }
       } else if (playerMove.choice === "Run") {
         console.log("You got away safely.");
         hasEscaped = true;
@@ -144,7 +149,9 @@ async function beginBattle(
         }
       });
       if (enemyChoices.length === 0) {
-        console.log(`Your opponent throws out a pokeball to catch ${enemyPokemon.name}. Glumly, they bow their head, with no other pokemon left in their pokebelt.`);
+        console.log(
+          `Your opponent bows their head glumly, they bow their head, with no other pokemon left in their pokebelt.`
+        );
         enemyPokemon = null;
         fightEnded = true;
       } else {
@@ -213,7 +220,6 @@ async function takeTurn(attacker, defender, playerTurn) {
 }
 
 async function substitutePokemon(trainer, faintedPokemon) {
-  console.clear()
   const playerChoices = [];
   trainer.belt.forEach(({ storage }) => {
     if (storage) {
@@ -222,9 +228,10 @@ async function substitutePokemon(trainer, faintedPokemon) {
       }
     }
   });
-  console.log(`\nYou throw a pokeball towards your fainted pokemon...\n`)
+  console.log(`\nYou throw a pokeball towards your fainted pokemon...\n`);
   trainer.catch(faintedPokemon);
-  if (playerChoices.length === 0) console.log("\nAll your pokemon have fainted\n");
+  if (playerChoices.length === 0)
+    console.log("\nAll your pokemon have fainted\n");
   else {
     const substitue = await inquirer.prompt([
       {
