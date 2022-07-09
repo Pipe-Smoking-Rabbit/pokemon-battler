@@ -63,6 +63,14 @@ async function beginBattle(
 
   while (fightEnded === false && hasEscaped === false) {
     if (playerTurn) {
+      if (enemyPokemon.status.burn || enemyPokemon.status.poison) {
+        const currentStatus = Object.keys(enemyPokemon.status)[0]
+        if (enemyPokemon.status[currentStatus].turnsRemaining) {
+          enemyPokemon.takeDamage(enemyPokemon.status[currentStatus].damage)
+          console.log (`\n${enemyPokemon.name} took ${enemyPokemon.status[currentStatus].damage} damage because they are still ${enemyPokemon.status[currentStatus].name}\n`)
+          enemyPokemon.status[currentStatus].turnsRemaining--
+        } else enemyPokemon.status = {}
+      }
       const playerMove = await inquirer.prompt([
         {
           type: "list",
