@@ -121,9 +121,8 @@ async function beginBattle(
         if (newPokemon.name === "You don't have any other pokemon!") {
           console.clear();
           console.log(
-            `\nYou give up searching your pokeball belt and realise that ${enemyPokemon.name} is about to attack\n`
+            `\nYou give up searching your pokeball belt and realise that ${enemyPokemon.name} is about to attack ${playerPokemon.name}\n`
           );
-          playerPokemon = playerPokemon;
         } else {
           console.clear();
           playerPokemon = player.getPokemon(newPokemon.name);
@@ -133,6 +132,15 @@ async function beginBattle(
         hasEscaped = true;
       }
     } else {
+      if (playerPokemon.status) {
+        if (playerPokemon.status.turnsRemaining) {
+          playerPokemon.takeDamage(playerPokemon.status.damage);
+          console.log(
+            `\n${playerPokemon.name} took ${playerPokemon.status.damage} damage because they are ${playerPokemon.status.name}\n`
+          );
+          playerPokemon.status.turnsRemaining--;
+        } else playerPokemon.status = {};
+      }
       await inquirer
         .prompt([
           {
@@ -168,7 +176,7 @@ async function beginBattle(
       });
       if (enemyChoices.length === 0) {
         console.log(
-          `Your opponent bows their head glumly, they bow their head, with no other pokemon left in their pokebelt.`
+          `Your opponent bows their head glumly, with no other pokemon left in their pokebelt.`
         );
         enemyPokemon = null;
         fightEnded = true;
