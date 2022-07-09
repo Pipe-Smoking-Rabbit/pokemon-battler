@@ -77,14 +77,9 @@ class Pokemon {
         effectiveTypeBonus = baseDamage * -0.33;
         consoleMessage += `\n(That move type seemed to be rather ineffective against ${defender.name})\n`;
       }
-      const effectChance = Math.random() * 100
-      if (selectedMove.statusEffect && effectChance > 33.33) {
-        console.log(
-          `\n${defender.name} has been ${
-            selectedMove.statusEffect[Object.keys(selectedMove.statusEffect)[0]].name
-          }\n`
-        );
-        defender.status = selectedMove.statusEffect
+      if (selectedMove.statusEffect) {
+        consoleMessage += `\n${defender.name} has been ${selectedMove.statusEffect.name}\n`
+        defender.status = selectedMove.statusEffect;
       }
       outgoingDamage = Math.round(
         baseDamage + critDamage + effectiveTypeBonus + powerMoveBonus
@@ -212,19 +207,16 @@ class Geodude extends Ground {
         name: "tackle",
         type: "normal",
         strength: "basic",
-        statusEffect: {},
       },
       "Rock Throw": {
         name: "rock throw",
         type: "ground",
         strength: "basic",
-        statusEffect: {},
       },
       "Land Slide": {
         name: "land slide",
         type: "ground",
         strength: "power",
-        statusEffect: {},
       },
     };
   }
@@ -240,19 +232,16 @@ class Pikachu extends Electric {
         name: "tackle",
         type: "normal",
         strength: "basic",
-        statusEffect: {},
       },
       Thunderbolt: {
         name: "thunderbolt",
         type: "electric",
         strength: "basic",
-        statusEffect: {},
       },
       "Storm Strike": {
         name: "storm strike",
         type: "electric",
         strength: "power",
-        statusEffect: {},
       },
     };
   }
@@ -268,24 +257,20 @@ class Charmander extends Fire {
         name: "tackle",
         type: "normal",
         strength: "basic",
-        statusEffect: {},
       },
       Ember: {
         name: "ember",
         type: "fire",
         strength: "basic",
-        statusEffect: {},
       },
       Flamethrower: {
         name: "flamethrower",
         type: "fire",
         strength: "power",
         statusEffect: {
-          burn: {
-            name: "burnt",
-            turnsRemaining: 1,
-            damage: 3,
-          },
+          name: "burnt",
+          turnsRemaining: 1,
+          damage: 3,
         },
       },
     };
@@ -302,19 +287,16 @@ class Squirtle extends Water {
         name: "tackle",
         type: "normal",
         strength: "basic",
-        statusEffect: {},
       },
       "Water Gun": {
         name: "water gun",
         type: "water",
         strength: "basic",
-        statusEffect: {},
       },
       "Hydro pump": {
         name: "hydro pump",
         type: "water",
         strength: "power",
-        statusEffect: {},
       },
     };
   }
@@ -330,30 +312,25 @@ class Bulbasaur extends Grass {
         name: "tackle",
         type: "normal",
         strength: "basic",
-        statusEffect: {},
       },
       "Vine Whip": {
         name: "vine whip",
         type: "grass",
         strength: "basic",
-        statusEffect: {},
       },
       "Trunk Hammer": {
         name: "trunk hammer",
         type: "grass",
         strength: "power",
-        statusEffect: {},
       },
       "Poison Powder": {
         name: "poison powder",
         type: "poison",
         strength: "basic",
         statusEffect: {
-          poison: {
-            name: "poisoned",
-            turnsRemaining: 3,
-            damage: 1,
-          },
+          name: "poisoned",
+          turnsRemaining: 3,
+          damage: 1,
         },
       },
     };
@@ -370,13 +347,11 @@ class Rattata extends Pokemon {
         name: "tackle",
         type: "normal",
         strength: "basic",
-        statusEffect: {},
       },
       "Round-House Kick": {
         name: "round-house kick",
         type: "normal",
         strength: "power",
-        statusEffect: {},
       },
     };
   }
@@ -392,7 +367,6 @@ class Vaporeon extends Water {
         name: "hydro pump",
         type: "water",
         strength: "power",
-        statusEffect: {},
       },
     };
   }
@@ -408,7 +382,6 @@ class Flareon extends Fire {
         name: "fire blast",
         type: "fire",
         strength: "power",
-        statusEffect: {},
       },
     };
   }
@@ -424,7 +397,6 @@ class Leafeon extends Grass {
         name: "giga drain",
         type: "grass",
         strength: "power",
-        statusEffect: {},
       },
     };
   }

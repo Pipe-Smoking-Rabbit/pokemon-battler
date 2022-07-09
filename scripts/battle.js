@@ -63,19 +63,29 @@ async function beginBattle(
 
   while (fightEnded === false && hasEscaped === false) {
     if (playerTurn) {
-      if (enemyPokemon.status.burn || enemyPokemon.status.poison) {
-        const currentStatus = Object.keys(enemyPokemon.status)[0]
-        if (enemyPokemon.status[currentStatus].turnsRemaining) {
-          enemyPokemon.takeDamage(enemyPokemon.status[currentStatus].damage)
-          console.log (`\n${enemyPokemon.name} took ${enemyPokemon.status[currentStatus].damage} damage because they are still ${enemyPokemon.status[currentStatus].name}\n`)
-          enemyPokemon.status[currentStatus].turnsRemaining--
-        } else enemyPokemon.status = {}
+      await inquirer.prompt([
+        {
+          type: "list",
+          name: "choice",
+          message: `It's your turn, get ready!`,
+          choices: ["Ok!"],
+        },
+      ]);
+      console.clear();
+      if (enemyPokemon.status) {
+        if (enemyPokemon.status.turnsRemaining) {
+          enemyPokemon.takeDamage(enemyPokemon.status.damage);
+          console.log(
+            `\n${enemyPokemon.name} took ${enemyPokemon.status.damage} damage because they are ${enemyPokemon.status.name}\n`
+          );
+          enemyPokemon.status.turnsRemaining--;
+        } else enemyPokemon.status = {};
       }
       const playerMove = await inquirer.prompt([
         {
           type: "list",
           name: "choice",
-          message: "What do you want to do?",
+          message: `What do you want to tell ${playerPokemon.name} to do?`,
           choices: [`Attack`, `Change Pokemon`, "Run"],
         },
       ]);
