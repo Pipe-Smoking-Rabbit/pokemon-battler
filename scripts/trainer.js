@@ -1,4 +1,5 @@
-const { instantiateBattle } = require("./battle")
+const inquirer = require("inquirer");
+const battleScript = require("./battle");
 
 class Trainer {
     constructor(name, Pokeball) {
@@ -28,7 +29,43 @@ class Trainer {
         return "You don't have a pokemon by that name"
     }
     fight(enemyPlayer) {
-        instantiateBattle(this, enemyPlayer);
+        const playerChoices = [];
+        const enemyChoices = [];
+        for (let i = 0; i < this.belt.length; i++) {
+          const inspectedPokeball = this.belt[i];
+          if (inspectedPokeball.storage !== null) {
+            playerChoices.push(inspectedPokeball.storage);
+          }
+        }
+        for (let i = 0; i < enemyPlayer.belt.length; i++) {
+          const inspectedPokeball = enemyPlayer.belt[i];
+          if (inspectedPokeball.storage !== null)
+            enemyChoices.push(inspectedPokeball.storage);
+        }
+
+        inquirer
+          .prompt([
+            {
+              type: "list",
+              name: "name",
+              message: "Which pokemon do you choose to send out?",
+              choices: playerChoices,
+            },
+          ])
+          .then((playerPokemons) => {
+            console.clear();
+            const randomisedEnemy =
+              enemyChoices[Math.floor(Math.random() * enemyChoices.length)];
+            battleScript(
+              this,
+              this.getPokemon(playerPokemons.name),
+              enemyPlayer,
+              randomisedEnemy
+            );
+          })
+          .catch((error) => {
+              console.log(error);
+          });
     }
 }
 
