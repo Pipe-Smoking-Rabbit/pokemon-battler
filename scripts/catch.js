@@ -24,15 +24,11 @@ async function catchPokemon(trainer) {
       },
     ])
     .then((userInput) => {
-      console.clear()
+      console.clear();
       numberOfPokemon = userInput.choice;
     })
     .catch((error) => {
-      if (error.isTtyError) {
-        console.log("uh oh");
-      } else {
-        console.log("uh oh again");
-      }
+      console.log(error);
     });
 
   for (let i = 0; i < numberOfPokemon; i++) {
@@ -43,22 +39,12 @@ async function catchPokemon(trainer) {
         {
           type: "list",
           name: "choice",
-          message: "What kind of Pokemon would you like to catch?",
-          choices: [
-            "Rattata",
-            "Squirtle",
-            "Charmander",
-            "Bulbasaur",
-            "Pikachu",
-            "Geodude",
-            // "Flareon",
-            // "Vaporeon",
-            // "Leafeon",
-          ],
+          message: "What type of Pokemon would you like to catch?",
+          choices: ["Normal", "Water", "Fire", "Grass", "Electric", "Ground"],
         },
       ])
       .then((userInput) => {
-        console.clear()
+        console.clear();
         species = userInput.choice;
       });
 
@@ -72,26 +58,26 @@ async function catchPokemon(trainer) {
         },
       ])
       .then((inputName) => {
-        console.clear()
+        console.clear();
         nickname = inputName.input;
         switch (species) {
-          case "Rattata":
+          case "Normal":
             trainer.catch(new Rattata(nickname));
             break;
-          case "Squirtle":
+          case "Water":
             trainer.catch(new Squirtle(nickname));
             break;
-          case "Pikachu":
+          case "Electric":
             trainer.catch(new Pikachu(nickname));
             break;
-          case "Charmander":
+          case "Fire":
             trainer.catch(new Charmander(nickname));
             break;
-          case "Bulbasaur":
+          case "Grass":
             trainer.catch(new Bulbasaur(nickname));
             break;
-          case "Geodude":
-            trainer.catch(new Geodude (nickname));
+          case "Ground":
+            trainer.catch(new Geodude(nickname));
             break;
           case "Flareon":
             trainer.catch(new Flareon(nickname));
@@ -105,11 +91,7 @@ async function catchPokemon(trainer) {
         }
       })
       .catch((error) => {
-        if (error.isTtyError) {
-          console.log("uh oh");
-        } else {
-          console.log("uh oh again");
-        }
+        console.log(error);
       });
   }
 }

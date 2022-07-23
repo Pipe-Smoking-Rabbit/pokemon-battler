@@ -16,17 +16,22 @@ async function takeTurn(attacker, defender, playerTurn) {
     ]);
     selectedMove = attacker.moves[desiredMove.choice];
   } else {
+    const defenderBeforeTesting = {...defender};
     let count = 100;
     let bestMove = 0;
     while (count > 0) {
-      const randomMove = Math.floor(Math.random() * availableMoves.length);
-      let testMove = attacker.moves[availableMoves[randomMove]];
-      if (attacker.useMove(testMove, attacker, defender) > bestMove) {
-        selectedMove = testMove;
-        bestMove = attacker.useMove(testMove, attacker, defender);
+      const randomMove =
+        attacker.moves[
+          availableMoves[Math.floor(Math.random() * availableMoves.length)]
+        ];
+      const testMove = attacker.useMove(randomMove, attacker, defender);
+      if (testMove > bestMove) {
+        selectedMove = randomMove;
+        bestMove = testMove;
       }
       count--;
-    }
+    } 
+    defender.status = defenderBeforeTesting.status
   }
 
   defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));
@@ -45,4 +50,4 @@ async function takeTurn(attacker, defender, playerTurn) {
   return !playerTurn;
 }
 
-module.exports = takeTurn
+module.exports = takeTurn;

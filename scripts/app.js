@@ -21,7 +21,7 @@ const testEnemy = new Trainer("Bob", Pokeball);
 
 // testEnemy.catch(new Charmander("Charlizard"));
 testEnemy.catch(new Bulbasaur("Planty"));
-testEnemy.catch(new Squirtle("Squirty"));
+// testEnemy.catch(new Squirtle("Squirty"));
 // testEnemy.catch(new Rattata("Joey's Rattata"));
 console.clear();
 
@@ -38,7 +38,7 @@ begin = async () => {
       },
     ])
     .then((answer) => {
-      console.clear()
+      console.clear();
       console.log(
         `\nYou and your opponent step up ready to battle your pokemon, your hand rests over your belt of pokeballs...\n`
       );

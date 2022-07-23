@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const battleScript = require("./battle");
+const battleScript = require("./battleScript");
 
 class Trainer {
     constructor(name, Pokeball) {

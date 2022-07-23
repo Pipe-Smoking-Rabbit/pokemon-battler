@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
-const substitutePokemon = require("./functions/substitutePokemon")
-const takeTurn = require("./functions/takeTurn")
+const substitutePokemon = require("./functions/substitutePokemon");
+const takeTurn = require("./functions/takeTurn");
 
 async function battleScript(
   player,
@@ -111,11 +111,7 @@ async function battleScript(
           playerTurn = takeTurn(enemyPokemon, playerPokemon, playerTurn);
         })
         .catch((error) => {
-          if (error.isTtyError) {
-            console.log("uh oh");
-          } else {
-            console.log("uh oh again");
-          }
+          console.log(error);
         });
     }
     if (playerPokemon.hasFainted()) {
