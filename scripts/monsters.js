@@ -48,7 +48,7 @@ class Pokemon {
     const accuracy = Math.random() * 100;
     let missChance = 15;
     if (attacker.status.missChanceMultiplier) {
-      consoleMessage += `\n${attacker.name} is struggling to see properly, and is less likely to land their attack.\n`
+      consoleMessage += `\n${attacker.name} is struggling to see properly, and is less likely to land their attack.\n`;
       missChance * attacker.status.missChanceMultiplier;
     }
     if (
@@ -91,7 +91,9 @@ class Pokemon {
         baseDamage + critDamage + effectiveTypeBonus + powerMoveBonus
       );
       consoleMessage += `\n${attacker.name} delt ${outgoingDamage} damage with that move!\n`;
-      console.log(consoleMessage);Pokeball
+      console.log(consoleMessage);
+      Pokeball;
+    }
   }
 
   hasFainted() {
