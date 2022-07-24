@@ -17,17 +17,16 @@ async function takeTurn(attacker, defender, playerTurn) {
     selectedMove = attacker.moves[desiredMove.choice];
   } else {
     const viableMoves = [];
-    availableMoves.forEach((move) => {
-      if (defender.defendsPoorlyAgainst(move.type)) {
+    availableMoves.forEach((inspectedMove) => {
+      if (defender.defendsPoorlyAgainst(attacker.moves[inspectedMove].type)) {
         viableMoves.push(move);
       }
     });
     console.log(viableMoves, "<-- first pass");
     if (viableMoves.length === 0) {
-      // *******ISSUE LIES IN THIS BLOCK OF LOGIC*******************
-      availableMoves.forEach((move) => {
-        if (!defender.defendsWellAgainst(move.type)) {
-          viableMoves.push(move);
+      availableMoves.forEach((inspectedMove) => {
+        if (!defender.defendsWellAgainst(attacker.moves[inspectedMove].type)) {
+          viableMoves.push(inspectedMove);
         }
       });
     }
