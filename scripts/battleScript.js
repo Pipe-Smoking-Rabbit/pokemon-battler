@@ -20,6 +20,7 @@ async function battleScript(
 
   while (fightEnded === false && hasEscaped === false) {
     if (playerTurn) {
+      //********************************************PLAYER POKEMON TURN******************************************
       await inquirer.prompt([
         {
           type: "list",
@@ -29,16 +30,21 @@ async function battleScript(
         },
       ]);
       console.clear();
-      if (enemyPokemon.status) {
-        if (enemyPokemon.status.damage) {
-          enemyPokemon.takeDamage(enemyPokemon.status.damage);
-          console.log(
-            `\n${enemyPokemon.name} took ${enemyPokemon.status.damage} damage because they are ${enemyPokemon.status.name}\n`
-          );
-        }
+
+      if (enemyPokemon.status.damage) {
+        enemyPokemon.takeDamage(enemyPokemon.status.damage);
+        console.log(
+          `\n${enemyPokemon.name} took ${enemyPokemon.status.damage} damage because they are ${enemyPokemon.status.name}\n`
+        );
         enemyPokemon.status.turnsRemaining--;
-        if (!enemyPokemon.status.turnsRemaining) enemyPokemon.status = {};
       }
+      if (playerPokemon.status.missChanceMultiplier) {
+        console.log(
+          `\n${playerPokemon.name} is struggling to see properly because they were ${playerPokemon.status.name}. (Attack accuracy severely reduced)\n`
+        );
+      }
+      if (!enemyPokemon.status.turnsRemaining) enemyPokemon.status = {};
+
       const playerMove = await inquirer.prompt([
         {
           type: "list",
@@ -89,23 +95,38 @@ async function battleScript(
         console.log("You got away safely.");
         hasEscaped = true;
       }
-    } else {
-      if (playerPokemon.status) {
-        if (playerPokemon.status.damage) {
-          playerPokemon.takeDamage(playerPokemon.status.damage);
-          console.log(
-            `\n${playerPokemon.name} took ${playerPokemon.status.damage} damage because they are ${playerPokemon.status.name}\n`
-          );
-        }
+    } else if (!playerTurn) {
+      //*******************************************ENEMY POKEMON TURN*******************************************
+      await inquirer.prompt([
+        {
+          type: "list",
+          name: "choice",
+          message: `It is your opponents turn.`,
+          choices: ["Ok!"],
+        },
+      ]);
+      console.clear();
+
+      if (playerPokemon.status.damage) {
+        playerPokemon.takeDamage(playerPokemon.status.damage);
+        console.log(
+          `\n${playerPokemon.name} took ${playerPokemon.status.damage} damage because they are ${playerPokemon.status.name}\n`
+        );
         playerPokemon.status.turnsRemaining--;
-        if (!playerPokemon.status.turnsRemaining) playerPokemon.status = {};
       }
+      if (enemyPokemon.status.missChanceMultiplier) {
+        console.log(
+          `\n${enemyPokemon.name} is struggling to see properly because they were ${enemyPokemon.status.name}. (Attack accuracy severely reduced)\n`
+        );
+      }
+      if (!playerPokemon.status.turnsRemaining) playerPokemon.status = {};
+
       await inquirer
         .prompt([
           {
             type: "list",
             name: "choice",
-            message: `It's the enemy's turn. They shout their command to ${enemyPokemon.name}`,
+            message: `They shout their command for ${enemyPokemon.name} to attack`,
             choices: [`"Brace yourself ${playerPokemon.name}"`],
           },
         ])

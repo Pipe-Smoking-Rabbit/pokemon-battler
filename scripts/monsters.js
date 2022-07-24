@@ -28,7 +28,7 @@ class Pokemon {
   }
 
   useMove(selectedMove, attacker, defender) {
-    console.clear();
+    // console.clear();
     let baseDamage = this.attackDamage;
     let critDamage = 0;
     let effectiveTypeBonus = 0;
@@ -48,8 +48,9 @@ class Pokemon {
     const accuracy = Math.random() * 100;
     let missChance = 15;
     if (attacker.status.missChanceMultiplier) {
-      consoleMessage += `\n${attacker.name} is struggling to see properly, and is less likely to land their attack.\n`;
-      missChance * attacker.status.missChanceMultiplier;
+      missChance *= attacker.status.missChanceMultiplier;
+      attacker.status.turnsRemaining--;
+      if (!attacker.status.turnsRemaining) attacker.status = {};
     }
     if (
       (selectedMove.strength === "basic" && accuracy < missChance) ||
@@ -84,15 +85,23 @@ class Pokemon {
         consoleMessage += `\n(That move type seemed to be rather ineffective against ${defender.name})\n`;
       }
       if (selectedMove.statusEffect) {
-        consoleMessage += `\n${defender.name} has been ${selectedMove.statusEffect.name}\n`;
-        defender.status = selectedMove.statusEffect;
+        const statusAccuracy = Math.random() * 100;
+        if (
+          selectedMove.statusEffect.effectChance > statusAccuracy ||
+          critDamage
+        ) {
+          consoleMessage += `\n${defender.name} has been ${selectedMove.statusEffect.name}.\n`;
+          defender.status = selectedMove.statusEffect;
+        } else {
+          consoleMessage += `\n${defender.name} managed to avoid being ${selectedMove.statusEffect.name}.\n`;
+        }
       }
       outgoingDamage = Math.round(
         baseDamage + critDamage + effectiveTypeBonus + powerMoveBonus
       );
       consoleMessage += `\n${attacker.name} delt ${outgoingDamage} damage with that move!\n`;
       console.log(consoleMessage);
-      Pokeball;
+      return outgoingDamage;
     }
   }
 
@@ -281,6 +290,7 @@ class Pidgey extends Flying {
         statusEffect: {
           name: "blinded",
           turnsRemaining: 1,
+          effectChance: 75,
           missChanceMultiplier: 3,
         },
       },
@@ -360,6 +370,7 @@ class Charmander extends Fire {
         strength: "power",
         statusEffect: {
           name: "burnt",
+          effectChance: 95,
           turnsRemaining: 1,
           damage: 3,
         },
@@ -420,6 +431,7 @@ class Bulbasaur extends Grass {
         strength: "basic",
         statusEffect: {
           name: "poisoned",
+          effectChance: 90,
           turnsRemaining: 3,
           damage: 1,
         },

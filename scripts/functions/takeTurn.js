@@ -16,22 +16,33 @@ async function takeTurn(attacker, defender, playerTurn) {
     ]);
     selectedMove = attacker.moves[desiredMove.choice];
   } else {
-    const defenderBeforeTesting = {...defender};
-    let count = 100;
-    let bestMove = 0;
-    while (count > 0) {
-      const randomMove =
+    const viableMoves = [];
+    availableMoves.forEach((move) => {
+      if (defender.defendsPoorlyAgainst(move.type)) {
+        viableMoves.push(move);
+      }
+    });
+    console.log(viableMoves, "<-- first pass");
+    if (viableMoves.length === 0) {
+      // *******ISSUE LIES IN THIS BLOCK OF LOGIC*******************
+      availableMoves.forEach((move) => {
+        if (!defender.defendsWellAgainst(move.type)) {
+          viableMoves.push(move);
+        }
+      });
+    }
+    console.log(viableMoves, "<-- second pass");
+    if (viableMoves.length === 0) {
+      selectedMove =
         attacker.moves[
           availableMoves[Math.floor(Math.random() * availableMoves.length)]
         ];
-      const testMove = attacker.useMove(randomMove, attacker, defender);
-      if (testMove > bestMove) {
-        selectedMove = randomMove;
-        bestMove = testMove;
-      }
-      count--;
-    } 
-    defender.status = defenderBeforeTesting.status
+    } else {
+      selectedMove =
+        attacker.moves[
+          viableMoves[Math.floor(Math.random() * viableMoves.length)]
+        ];
+    }
   }
 
   defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));
