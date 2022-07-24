@@ -1,4 +1,4 @@
-const { Trainer } = require("../scripts/trainer");
+const Trainer = require("../scripts/trainer");
 const inquirer = require("inquirer");
 const {
   Pokemon,
@@ -9,15 +9,12 @@ const {
   Squirtle,
   Bulbasaur,
   Rattata,
-  Flareon,
-  Vaporeon,
-  Leafeon,
+  Pidgey
 } = require("../scripts/monsters");
-const { Pokeball } = require("./pokeball");
-const { catchPokemon } = require("./catch");
+const catchPokemon = require("./functions/catch");
 
-const testTrainer = new Trainer("Keith", Pokeball);
-const testEnemy = new Trainer("Bob", Pokeball);
+const testTrainer = new Trainer("Keith");
+const testEnemy = new Trainer("Bob");
 
 // testEnemy.catch(new Charmander("Charlizard"));
 testEnemy.catch(new Bulbasaur("Planty"));

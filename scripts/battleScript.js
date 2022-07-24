@@ -30,13 +30,14 @@ async function battleScript(
       ]);
       console.clear();
       if (enemyPokemon.status) {
-        if (enemyPokemon.status.turnsRemaining) {
+        if (enemyPokemon.status.damage) {
           enemyPokemon.takeDamage(enemyPokemon.status.damage);
           console.log(
             `\n${enemyPokemon.name} took ${enemyPokemon.status.damage} damage because they are ${enemyPokemon.status.name}\n`
           );
-          enemyPokemon.status.turnsRemaining--;
-        } else enemyPokemon.status = {};
+        }
+        enemyPokemon.status.turnsRemaining--;
+        if (!enemyPokemon.status.turnsRemaining) enemyPokemon.status = {};
       }
       const playerMove = await inquirer.prompt([
         {
@@ -90,13 +91,14 @@ async function battleScript(
       }
     } else {
       if (playerPokemon.status) {
-        if (playerPokemon.status.turnsRemaining) {
+        if (playerPokemon.status.damage) {
           playerPokemon.takeDamage(playerPokemon.status.damage);
           console.log(
             `\n${playerPokemon.name} took ${playerPokemon.status.damage} damage because they are ${playerPokemon.status.name}\n`
           );
-          playerPokemon.status.turnsRemaining--;
-        } else playerPokemon.status = {};
+        }
+        playerPokemon.status.turnsRemaining--;
+        if (!playerPokemon.status.turnsRemaining) playerPokemon.status = {};
       }
       await inquirer
         .prompt([

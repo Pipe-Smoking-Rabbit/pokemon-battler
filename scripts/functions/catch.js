@@ -4,12 +4,10 @@ const {
   Squirtle,
   Charmander,
   Bulbasaur,
-  Flareon,
-  Leafeon,
-  Vaporeon,
   Pikachu,
   Geodude,
-} = require("./monsters");
+  Pidgey,
+} = require("../monsters");
 
 async function catchPokemon(trainer) {
   let numberOfPokemon = 0;
@@ -39,8 +37,16 @@ async function catchPokemon(trainer) {
         {
           type: "list",
           name: "choice",
-          message: "What type of Pokemon would you like to catch?",
-          choices: ["Normal", "Water", "Fire", "Grass", "Electric", "Ground"],
+          message: "What species of Pokemon would you like to catch?",
+          choices: [
+            "Catch a Rattata - normal type",
+            "Catch a Squirtle - water type",
+            "Catch a Charmander - fire type",
+            "Catch a Bulbasaur - grass type",
+            "Catch a Pikachu - electric type",
+            "Catch a Geodude - ground type",
+            "Catch a Pidgey - flying type",
+          ],
         },
       ])
       .then((userInput) => {
@@ -61,32 +67,26 @@ async function catchPokemon(trainer) {
         console.clear();
         nickname = inputName.input;
         switch (species) {
-          case "Normal":
+          case "Catch a Rattata - normal type":
             trainer.catch(new Rattata(nickname));
             break;
-          case "Water":
+          case "Catch a Squirtle - water type":
             trainer.catch(new Squirtle(nickname));
             break;
-          case "Electric":
+          case "Catch a Pikachu - electric type":
             trainer.catch(new Pikachu(nickname));
             break;
-          case "Fire":
+          case "Catch a Charmander - fire type":
             trainer.catch(new Charmander(nickname));
             break;
-          case "Grass":
+          case "Catch a Bulbasaur - grass type":
             trainer.catch(new Bulbasaur(nickname));
             break;
-          case "Ground":
+          case "Catch a Geodude - ground type":
             trainer.catch(new Geodude(nickname));
             break;
-          case "Flareon":
-            trainer.catch(new Flareon(nickname));
-            break;
-          case "Leafeon":
-            trainer.catch(new Leafeon(nickname));
-            break;
-          case "Vaporeon":
-            trainer.catch(new Vaporeon(nickname));
+          case "Catch a Pidgey - flying type":
+            trainer.catch(new Pidgey(nickname));
             break;
         }
       })
@@ -96,4 +96,4 @@ async function catchPokemon(trainer) {
   }
 }
 
-module.exports = { catchPokemon };
+module.exports = catchPokemon;

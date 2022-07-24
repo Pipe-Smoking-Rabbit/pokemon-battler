@@ -33,4 +33,4 @@ class Pokeball {
   }
 }
 
-module.exports = { Pokeball };
+module.exports = Pokeball;

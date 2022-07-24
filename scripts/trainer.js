@@ -1,8 +1,9 @@
 const inquirer = require("inquirer");
+const Pokeball = require("./pokeball")
 const battleScript = require("./battleScript");
 
 class Trainer {
-    constructor(name, Pokeball) {
+    constructor(name) {
         this.name = name
         this.belt = [new Pokeball, new Pokeball, new Pokeball, new Pokeball, new Pokeball, new Pokeball]
     }
@@ -69,4 +70,4 @@ class Trainer {
     }
 }
 
-module.exports = { Trainer }
+module.exports = Trainer
