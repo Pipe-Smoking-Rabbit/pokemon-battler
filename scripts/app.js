@@ -16,10 +16,10 @@ const catchPokemon = require("./functions/catch");
 const testTrainer = new Trainer("Keith");
 const testEnemy = new Trainer("Bob");
 
-// testEnemy.catch(new Charmander("Charlizard"));
+testEnemy.catch(new Charmander("Charlizard"));
 testEnemy.catch(new Bulbasaur("Planty"));
 // testEnemy.catch(new Squirtle("Squirty"));
-// testEnemy.catch(new Rattata("Joey's Rattata"));
+testEnemy.catch(new Pidgey("Hawkie"));
 console.clear();
 
 begin = async () => {

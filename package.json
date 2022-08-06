@@ -2,7 +2,7 @@
   "name": "fun-pokemon-battler",
   "version": "1.0.0",
   "description": "​\r You will be implementing a Pokemon battle game using the Object Oriented Programming skills you've learned this week!\r ​\r For those of you unfamiliar with Pokemon, you can think about it as people (trainers) who have pets (pokemon), that live inside tiny houses (pokeballs). Trainers can only hold a maximum 6 pokeballs.\r ​\r These people are also a bit strange, and they get their pets into fights with other people's pets in the park for no reason at all...\r ​",
-  "main": "index.js",
+  "main": "app.js",
   "dependencies": {
     "ansi-escapes": "^4.3.2",
     "ansi-regex": "^5.0.1",
@@ -195,6 +195,7 @@
     "yargs-parser": "^21.0.1"
   },
   "scripts": {
+    "start": "node ./scripts/app.js",
     "test": "jest"
   },
   "repository": {

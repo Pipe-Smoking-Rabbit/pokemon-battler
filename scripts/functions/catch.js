@@ -17,8 +17,8 @@ async function catchPokemon(trainer) {
       {
         type: "list",
         name: "choice",
-        message: "How many Pokemon do you want to catch?",
-        choices: [1, 2, 3, 4, 5, 6],
+        message: "How many Pokemon do you want to catch? (Your opponent has 3 Pokemons)",
+        choices: [2, 3, 4],
       },
     ])
     .then((userInput) => {

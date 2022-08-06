@@ -22,7 +22,6 @@ async function takeTurn(attacker, defender, playerTurn) {
         viableMoves.push(move);
       }
     });
-    console.log(viableMoves, "<-- first pass");
     if (viableMoves.length === 0) {
       availableMoves.forEach((inspectedMove) => {
         if (!defender.defendsWellAgainst(attacker.moves[inspectedMove].type)) {
@@ -30,7 +29,6 @@ async function takeTurn(attacker, defender, playerTurn) {
         }
       });
     }
-    console.log(viableMoves, "<-- second pass");
     if (viableMoves.length === 0) {
       selectedMove =
         attacker.moves[

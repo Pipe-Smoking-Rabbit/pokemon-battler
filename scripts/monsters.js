@@ -28,7 +28,7 @@ class Pokemon {
   }
 
   useMove(selectedMove, attacker, defender) {
-    // console.clear();
+    console.clear();
     let baseDamage = this.attackDamage;
     let critDamage = 0;
     let effectiveTypeBonus = 0;
