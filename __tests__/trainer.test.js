@@ -1,5 +1,5 @@
-const { Trainer } = require("../scripts/trainer");
-const { Pokeball } = require("../scripts/pokeball");
+const Trainer = require("../scripts/trainer");
+const Pokeball = require("../scripts/pokeball");
 const {
   Pokemon,
   Fire,

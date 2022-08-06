@@ -27,7 +27,7 @@ class Pokemon {
     this.hitPoints -= damage;
   }
 
-  useMove(selectedMove, attacker, defender) {
+  useMove(selectedMove, defender) {
     console.clear();
     let baseDamage = this.attackDamage;
     let critDamage = 0;
@@ -47,20 +47,20 @@ class Pokemon {
 
     const accuracy = Math.random() * 100;
     let missChance = 15;
-    if (attacker.status.missChanceMultiplier) {
-      missChance *= attacker.status.missChanceMultiplier;
-      attacker.status.turnsRemaining--;
-      if (!attacker.status.turnsRemaining) attacker.status = {};
+    if (this.status.missChanceMultiplier) {
+      missChance *= this.status.missChanceMultiplier;
+      this.status.turnsRemaining--;
+      if (!this.status.turnsRemaining) this.status = {};
     }
     if (
       (selectedMove.strength === "basic" && accuracy < missChance) ||
       (selectedMove.strength === "power" && accuracy < missChance * 2)
     ) {
-      consoleMessage += `\n${attacker.name} ${flavour} ${selectedMove.name} against ${defender.name}... but completely misses... How embarrasing!\n`;
+      consoleMessage += `\n${this.name} ${flavour} ${selectedMove.name} against ${defender.name}... but completely misses... How embarrasing!\n`;
       console.log(consoleMessage);
       return 0;
     } else {
-      if (attacker.type !== selectedMove.type) {
+      if (this.type !== selectedMove.type) {
         baseDamage *= 0.85;
       }
       const critRoll = Math.random() * 100;
@@ -99,7 +99,7 @@ class Pokemon {
       outgoingDamage = Math.round(
         baseDamage + critDamage + effectiveTypeBonus + powerMoveBonus
       );
-      consoleMessage += `\n${attacker.name} delt ${outgoingDamage} damage with that move!\n`;
+      consoleMessage += `\n${this.name} delt ${outgoingDamage} damage with that move!\n`;
       console.log(consoleMessage);
       return outgoingDamage;
     }

@@ -42,7 +42,7 @@ async function takeTurn(attacker, defender, playerTurn) {
     }
   }
 
-  defender.takeDamage(attacker.useMove(selectedMove, attacker, defender));
+  defender.takeDamage(attacker.useMove(selectedMove, defender));
   if (defender.hitPoints < 0) defender.hitPoints = 0;
 
   console.log(`\n${defender.name} has ${defender.hitPoints}HP remaining\n`);

@@ -1,4 +1,4 @@
-const { Pokeball } = require("../scripts/pokeball")
+const Pokeball = require("../scripts/pokeball")
 const { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata } = require("../scripts/monsters");
 
 describe('Pokeball Class', () => {

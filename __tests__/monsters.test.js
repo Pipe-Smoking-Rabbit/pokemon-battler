@@ -23,13 +23,19 @@ describe("Pokemon Class", () => {
   });
   test('Returned instance has the move property, defaulting to "tackle"', () => {
     const mitchsMon = new Pokemon("Ian");
-    expect(mitchsMon.move).toBe("tackle");
+    expect(mitchsMon.moves).toEqual({
+      tackle: {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      },
+    });
   });
   describe("methods", () => {
-    test('isEffectiveAgainst method returns a boolean if the pokemon is effective against their opponent, "normal" pokemon are not effective against anything', () => {
+    test('defendsWellAgainst method returns a boolean if the pokemon is effective against their opponent, "normal" pokemon are not effective against anything', () => {
       const dansMon = new Pokemon("Morapungo");
       const mitchsMon = new Pokemon("Ian");
-      expect(dansMon.isEffectiveAgainst(mitchsMon)).toBe(false);
+      expect(dansMon.defendsWellAgainst(mitchsMon)).toBe(false);
     });
     test("takeDamage method will reduce hitpoints by given number", () => {
       const dansMon = new Pokemon("Morapungo");
@@ -41,11 +47,8 @@ describe("Pokemon Class", () => {
     });
     test("useMove method will return attack damage", () => {
       const dansMon = new Pokemon("Morapungo");
-      const consoleSpy = jest.spyOn(console, "log");
+      const mitchsMon = new Pokemon("Ian");
       expect(dansMon.useMove()).toBe(dansMon.attackDamage);
-      expect(consoleSpy).toHaveBeenCalledWith("Morapungo used tackle. It dealt 10 damage.");
-      expect(consoleSpy).toHaveBeenCalledTimes(1);
-      consoleSpy.mockRestore();
     });
     test("hasFainted will return a boolean indicating when dead", () => {
       const dansMon = new Pokemon("Morapungo");
