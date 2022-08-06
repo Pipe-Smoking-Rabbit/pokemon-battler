@@ -45,10 +45,15 @@ describe("Pokemon Class", () => {
       mitchsMon.takeDamage(40);
       expect(mitchsMon.hitPoints).toBe(60);
     });
-    test("useMove method will return attack damage", () => {
+    test("useMove method will return a number indicating damage delt", () => {
       const dansMon = new Pokemon("Morapungo");
       const mitchsMon = new Pokemon("Ian");
-      expect(dansMon.useMove()).toBe(dansMon.attackDamage);
+      const selectedMove = {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      };
+      expect(typeof dansMon.useMove(selectedMove, mitchsMon)).toBe("number");
     });
     test("hasFainted will return a boolean indicating when dead", () => {
       const dansMon = new Pokemon("Morapungo");
@@ -95,19 +100,19 @@ describe("Grass Class", () => {
   });
 });
 
-describe("Types appropriately change isEffectiveAgainst and isWeakTo", () => {
+describe("Types appropriately change defendsWellAgainst and defendsPoorlyAgainst", () => {
   test("Returns true or false correctly based on type", () => {
     const planty = new Grass("Snoop Dogg");
     const wetMan = new Water("Moist");
     const fireBoy = new Fire("Bigshaq");
 
-    expect(planty.isWeakTo(fireBoy)).toBe(true);
-    expect(planty.isWeakTo(wetMan)).toBe(false);
-    expect(fireBoy.isWeakTo(fireBoy)).toBe(false);
+    expect(planty.defendsPoorlyAgainst("fire")).toBe(true);
+    expect(planty.defendsPoorlyAgainst("water")).toBe(false);
+    expect(fireBoy.defendsPoorlyAgainst("fire")).toBe(false);
 
-    expect(wetMan.isEffectiveAgainst(fireBoy)).toBe(true);
-    expect(planty.isEffectiveAgainst(wetMan)).toBe(true);
-    expect(wetMan.isEffectiveAgainst(wetMan)).toBe(false);
+    expect(wetMan.defendsWellAgainst("fire")).toBe(true);
+    expect(planty.defendsWellAgainst("water")).toBe(true);
+    expect(wetMan.defendsWellAgainst("water")).toBe(true);
   });
 });
 
@@ -116,24 +121,100 @@ describe("testing for implementation of species of pokemons", () => {
     const charmander = new Charmander("Charlizard");
     expect(charmander).toBeInstanceOf(Fire);
     expect(charmander).toBeInstanceOf(Pokemon);
-    expect(charmander.move).toBe("ember")
+    expect(charmander.moves).toEqual({
+      Tackle: {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      },
+      Ember: {
+        name: "ember",
+        type: "fire",
+        strength: "basic",
+      },
+      Flamethrower: {
+        name: "flamethrower",
+        type: "fire",
+        strength: "power",
+        statusEffect: {
+          name: "burnt",
+          effectChance: 95,
+          turnsRemaining: 1,
+          damage: 3,
+        },
+      },
+    });
   });
   test('Squirtle returns an instance of the water class and pokemon class, also has own move', () => {
       const squirtle = new Squirtle("Crush");
       expect(squirtle).toBeInstanceOf(Water);
       expect(squirtle).toBeInstanceOf(Pokemon);
-      expect(squirtle.move).toBe("water gun");
+      expect(squirtle.moves).toEqual({
+        Tackle: {
+          name: "tackle",
+          type: "normal",
+          strength: "basic",
+        },
+        "Water Gun": {
+          name: "water gun",
+          type: "water",
+          strength: "basic",
+        },
+        "Hydro pump": {
+          name: "hydro pump",
+          type: "water",
+          strength: "power",
+        },
+      });
   });
   test("Bulbasaur returns an instance of the grass class and pokemon class, also has own move", () => {
     const bulbasaur = new Bulbasaur("Crush");
     expect(bulbasaur).toBeInstanceOf(Grass);
     expect(bulbasaur).toBeInstanceOf(Pokemon);
-    expect(bulbasaur.move).toBe("vine whip");
+    expect(bulbasaur.moves).toEqual({
+      Tackle: {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      },
+      "Vine Whip": {
+        name: "vine whip",
+        type: "grass",
+        strength: "basic",
+      },
+      "Trunk Hammer": {
+        name: "trunk hammer",
+        type: "grass",
+        strength: "power",
+      },
+      "Poison Powder": {
+        name: "poison powder",
+        type: "poison",
+        strength: "basic",
+        statusEffect: {
+          name: "poisoned",
+          effectChance: 90,
+          turnsRemaining: 3,
+          damage: 1,
+        },
+      },
+    });
   });
   test("Rattata returns an instance of the pokemon class, also has own move", () => {
     const rattata = new Rattata("Stewart Little");
     expect(rattata).toBeInstanceOf(Rattata);
     expect(rattata).toBeInstanceOf(Pokemon);
-    expect(rattata.move).toBe("round-house kick");
+    expect(rattata.moves).toEqual({
+      Tackle: {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      },
+      "Round-House Kick": {
+        name: "round-house kick",
+        type: "normal",
+        strength: "power",
+      },
+    });
   });
 });

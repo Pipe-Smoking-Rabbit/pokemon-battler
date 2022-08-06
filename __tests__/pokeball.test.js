@@ -34,7 +34,7 @@ describe('Pokeball Class', () => {
                 pokeball.throw(pokeman);
                 expect(pokeball.storage).toBe(pokeman)
 
-                expect(consoleSpy).toHaveBeenCalledWith(`You caught ${pokeman.name}!`);
+                expect(consoleSpy).toHaveBeenCalledWith(`\nYou caught ${pokeman.name}!\n`);
                 expect(consoleSpy).toHaveBeenCalledTimes(1);
                 consoleSpy.mockRestore();
             })
@@ -58,7 +58,7 @@ describe('Pokeball Class', () => {
                 pokeball.storage = newPokeman;
                 expect(pokeball.throw()).toBe(newPokeman);
 
-                expect(consoleSpy).toHaveBeenCalledWith(`GO ${newPokeman.name.toUpperCase()}!!`);
+                expect(consoleSpy).toHaveBeenCalledWith("\nYou throw your pokeball and Hi there, my names.... charmander :3, a fire type pokemon, bursts out ready to fight.\n\"GO HI THERE, MY NAMES.... CHARMANDER :3!!\"\n");
                 expect(consoleSpy).toHaveBeenCalledTimes(1);
                 consoleSpy.mockRestore();
             })
