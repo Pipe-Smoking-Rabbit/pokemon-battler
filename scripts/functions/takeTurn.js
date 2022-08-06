@@ -19,7 +19,7 @@ async function takeTurn(attacker, defender, playerTurn) {
     const viableMoves = [];
     availableMoves.forEach((inspectedMove) => {
       if (defender.defendsPoorlyAgainst(attacker.moves[inspectedMove].type)) {
-        viableMoves.push(move);
+        viableMoves.push(inspectedMove);
       }
     });
     if (viableMoves.length === 0) {
