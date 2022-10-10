@@ -31,6 +31,7 @@ async function battleScript(
       ]);
       console.clear();
 
+      // *** APPLY STATUS EFFECTS ***
       if (enemyPokemon.status.damage) {
         enemyPokemon.takeDamage(enemyPokemon.status.damage);
         console.log(
@@ -44,7 +45,8 @@ async function battleScript(
         );
       }
       if (!enemyPokemon.status.turnsRemaining) enemyPokemon.status = {};
-
+      
+      // *** ATTACK OR SWAP ***
       const playerMove = await inquirer.prompt([
         {
           type: "list",
@@ -54,9 +56,12 @@ async function battleScript(
         },
       ]);
 
+      // *** ATTACK MOVE ***
       if (playerMove.choice === `Attack`) {
         playerTurn = await takeTurn(playerPokemon, enemyPokemon, playerTurn);
       }
+
+      // *** SWAP POKEMON ***
       if (playerMove.choice === `Change Pokemon`) {
         playerTurn = false;
         const playerChoices = [];

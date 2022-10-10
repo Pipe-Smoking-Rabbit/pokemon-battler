@@ -63,30 +63,29 @@ async function catchPokemon(trainer) {
           default: "Choose a nickname for your Pokemon",
         },
       ])
-      .then((inputName) => {
+      .then(({input}) => {
         console.clear();
-        nickname = inputName.input;
         switch (species) {
           case "Catch a Rattata - normal type":
-            trainer.catch(new Rattata(nickname));
+            trainer.catch(new Rattata(input));
             break;
           case "Catch a Squirtle - water type":
-            trainer.catch(new Squirtle(nickname));
+            trainer.catch(new Squirtle(input));
             break;
           case "Catch a Pikachu - electric type":
-            trainer.catch(new Pikachu(nickname));
+            trainer.catch(new Pikachu(input));
             break;
           case "Catch a Charmander - fire type":
-            trainer.catch(new Charmander(nickname));
+            trainer.catch(new Charmander(input));
             break;
           case "Catch a Bulbasaur - grass type":
-            trainer.catch(new Bulbasaur(nickname));
+            trainer.catch(new Bulbasaur(input));
             break;
           case "Catch a Geodude - ground type":
-            trainer.catch(new Geodude(nickname));
+            trainer.catch(new Geodude(input));
             break;
           case "Catch a Pidgey - flying type":
-            trainer.catch(new Pidgey(nickname));
+            trainer.catch(new Pidgey(input));
             break;
         }
       })

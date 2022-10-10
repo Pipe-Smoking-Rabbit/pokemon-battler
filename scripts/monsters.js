@@ -1,3 +1,5 @@
+const chalk = require("chalk");
+
 class Pokemon {
   constructor(name) {
     this.name = name;
@@ -29,21 +31,16 @@ class Pokemon {
 
   useMove(selectedMove, defender) {
     console.clear();
+    console.log(
+      chalk.yellow(
+        `\n"${this.name}, use ${selectedMove.name}!"\n`.toUpperCase()
+      )
+    );
     let baseDamage = this.attackDamage;
     let critDamage = 0;
     let effectiveTypeBonus = 0;
     let powerMoveBonus = 0;
     let outgoingDamage = 0;
-    let consoleMessage = "";
-    let flavour = "";
-
-    const flavourPool = [
-      `centres their concentration before letting loose`,
-      `sets their stance firmly, then uses`,
-      `receives their command and launches`,
-      `rushes forward and unleashes`,
-    ];
-    flavour = flavourPool[Math.floor(Math.random() * flavourPool.length)];
 
     const accuracy = Math.random() * 100;
     let missChance = 15;
@@ -56,8 +53,7 @@ class Pokemon {
       (selectedMove.strength === "basic" && accuracy < missChance) ||
       (selectedMove.strength === "power" && accuracy < missChance * 2)
     ) {
-      consoleMessage += `\n${this.name} ${flavour} ${selectedMove.name} against ${defender.name}... but completely misses... How embarrasing!\n`;
-      console.log(consoleMessage);
+      console.log(chalk.red(`\nMISS\n`));
       return 0;
     } else {
       if (this.type !== selectedMove.type) {
@@ -66,23 +62,23 @@ class Pokemon {
       const critRoll = Math.random() * 100;
       if (critRoll > 85) {
         critDamage = baseDamage * 0.5;
-        consoleMessage += `\n${this.name} ${flavour} ${selectedMove.name}, landing a critical hit!!!\n`;
+        console.log(chalk.greenBright(`\nCRITICAL HIT!\n`));
       } else {
         outgoingDamage = Math.round(
           baseDamage + effectiveTypeBonus + powerMoveBonus
         );
-        consoleMessage += `\n${this.name} ${flavour} ${selectedMove.name}, striking ${defender.name} firmly!\n`;
+        console.log(chalk.green(`\nHIT\n`));
       }
       if (selectedMove.strength === "power") {
         powerMoveBonus = baseDamage * 0.2;
       }
       if (defender.defendsPoorlyAgainst(selectedMove.type)) {
-        effectiveTypeBonus = baseDamage * 0.33;
-        consoleMessage += `\n(That move type seemed to be very effective against ${defender.name})\n`;
+        effectiveTypeBonus = baseDamage * 0.5;
+        console.log(chalk.green(`\nEFFECTIVE (x1.5 DAMAGE)\n`));
       }
       if (defender.defendsWellAgainst(selectedMove.type)) {
-        effectiveTypeBonus = baseDamage * -0.33;
-        consoleMessage += `\n(That move type seemed to be rather ineffective against ${defender.name})\n`;
+        effectiveTypeBonus = baseDamage * -0.5;
+        console.log(chalk.red(`\nINEFFECTIVE (x0.5 DAMAGE)\n`));
       }
       if (selectedMove.statusEffect) {
         const statusAccuracy = Math.random() * 100;
@@ -90,17 +86,20 @@ class Pokemon {
           selectedMove.statusEffect.effectChance > statusAccuracy ||
           critDamage
         ) {
-          consoleMessage += `\n${defender.name} has been ${selectedMove.statusEffect.name}.\n`;
+          console.log(
+            `\n${defender.name} has been ${selectedMove.statusEffect.name}.\n`
+          );
           defender.status = selectedMove.statusEffect;
         } else {
-          consoleMessage += `\n${defender.name} managed to avoid being ${selectedMove.statusEffect.name}.\n`;
+          console.log(
+            `\n${defender.name} managed to avoid being ${selectedMove.statusEffect.name}.\n`
+          );
         }
       }
       outgoingDamage = Math.round(
         baseDamage + critDamage + effectiveTypeBonus + powerMoveBonus
       );
-      consoleMessage += `\n${this.name} delt ${outgoingDamage} damage with that move!\n`;
-      console.log(consoleMessage);
+      console.log(chalk.blue(`\n${outgoingDamage} DAMAGE\n`));
       return outgoingDamage;
     }
   }
