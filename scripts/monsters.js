@@ -57,28 +57,25 @@ class Pokemon {
       return 0;
     } else {
       if (this.type !== selectedMove.type) {
-        baseDamage *= 0.85;
+        baseDamage *= 0.75;
+      }
+      if (defender.defendsPoorlyAgainst(selectedMove.type)) {
+        effectiveTypeBonus = baseDamage * 0.5;
+        console.log(chalk.green(`\nEFFECTIVE TYPE (x1.5 DAMAGE)\n`));
+      }
+      if (defender.defendsWellAgainst(selectedMove.type)) {
+        effectiveTypeBonus = baseDamage * -0.5;
+        console.log(chalk.red(`\nINEFFECTIVE TYPE (x0.5 DAMAGE)\n`));
       }
       const critRoll = Math.random() * 100;
-      if (critRoll > 85) {
+      if (critRoll > 90) {
         critDamage = baseDamage * 0.5;
         console.log(chalk.greenBright(`\nCRITICAL HIT!\n`));
       } else {
-        outgoingDamage = Math.round(
-          baseDamage + effectiveTypeBonus + powerMoveBonus
-        );
         console.log(chalk.green(`\nHIT\n`));
       }
       if (selectedMove.strength === "power") {
         powerMoveBonus = baseDamage * 0.2;
-      }
-      if (defender.defendsPoorlyAgainst(selectedMove.type)) {
-        effectiveTypeBonus = baseDamage * 0.5;
-        console.log(chalk.green(`\nEFFECTIVE (x1.5 DAMAGE)\n`));
-      }
-      if (defender.defendsWellAgainst(selectedMove.type)) {
-        effectiveTypeBonus = baseDamage * -0.5;
-        console.log(chalk.red(`\nINEFFECTIVE (x0.5 DAMAGE)\n`));
       }
       if (selectedMove.statusEffect) {
         const statusAccuracy = Math.random() * 100;
