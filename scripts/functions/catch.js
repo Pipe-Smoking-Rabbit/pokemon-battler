@@ -53,7 +53,7 @@ async function catchPokemon(trainer) {
       ])
       .then((userInput) => {
         console.clear();
-        species = userInput.choice;
+        species = userInput.choice.split(" ")[2];
       });
 
     await inquirer
@@ -68,25 +68,25 @@ async function catchPokemon(trainer) {
       .then(({ input }) => {
         console.clear();
         switch (species) {
-          case "Catch a Rattata - normal type":
+          case "Rattata":
             trainer.catch(new Rattata(input));
             break;
-          case "Catch a Squirtle - water type":
+          case "Squirtle":
             trainer.catch(new Squirtle(input));
             break;
-          case "Catch a Pikachu - electric type":
+          case "Pikachu":
             trainer.catch(new Pikachu(input));
             break;
-          case "Catch a Charmander - fire type":
+          case "Charmander":
             trainer.catch(new Charmander(input));
             break;
-          case "Catch a Bulbasaur - grass type":
+          case "Bulbasaur":
             trainer.catch(new Bulbasaur(input));
             break;
-          case "Catch a Geodude - ground type":
+          case "Geodude":
             trainer.catch(new Geodude(input));
             break;
-          case "Catch a Pidgey - flying type":
+          case "Pidgey":
             trainer.catch(new Pidgey(input));
             break;
         }

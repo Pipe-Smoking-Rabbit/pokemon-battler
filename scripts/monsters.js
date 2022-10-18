@@ -31,7 +31,7 @@ class Pokemon {
   }
 
   useMove(selectedMove, defender) {
-    console.clear();
+    // console.clear();
     console.log(
       chalk.yellow(
         `\n"${this.name}, use ${selectedMove.name}!"\n`.toUpperCase()

@@ -1,54 +1,66 @@
 const inquirer = require("inquirer");
 const chalk = require("chalk");
+const { typeColour } = require("../lookup-tables/type-colour");
 
 async function takeTurn(attacker, defender, playerTurn) {
   console.clear();
-  const availableMoves = Object.keys(attacker.moves);
+  const attackerMoves = attacker.moves;
 
   let selectedMove;
   if (playerTurn) {
+    const humanMoves = Object.keys(attackerMoves).map((move) => {
+      const type = attackerMoves[move].type.toUpperCase();
+      const colour = typeColour[type.toLowerCase()];
+      const strength = attackerMoves[move].strength.toUpperCase();
+      return {
+        name: `${move} ${colour(`[${type}]`)} ${colour(`[${strength}]`)}`,
+        value: move,
+      };
+    });
+
     const desiredMove = await inquirer.prompt([
       {
         type: "list",
         name: "choice",
         message: `What move would you like to tell ${attacker.name} to use?`,
-        choices: availableMoves,
+        choices: humanMoves,
       },
     ]);
-    selectedMove = attacker.moves[desiredMove.choice];
+    selectedMove = attackerMoves[desiredMove.choice];
   } else {
     // ******* COMPUTER MOVE LOGIC ********
+    const computerMoves = Object.keys(attackerMoves);
     const viableMoves = [];
-    availableMoves.forEach((inspectedMove) => {
-      if (defender.defendsPoorlyAgainst(attacker.moves[inspectedMove].type)) {
+    computerMoves.forEach((inspectedMove) => {
+      if (defender.defendsPoorlyAgainst(attackerMoves[inspectedMove].type)) {
         viableMoves.push(inspectedMove);
       }
     });
     if (viableMoves.length === 0) {
-      availableMoves.forEach((inspectedMove) => {
+      computerMoves.forEach((inspectedMove) => {
         if (
-          !defender.defendsWellAgainst(attacker.moves[inspectedMove].type) &&
-          attacker.moves[inspectedMove].type === attacker.type
+          !defender.defendsWellAgainst(attackerMoves[inspectedMove].type) &&
+          attackerMoves[inspectedMove].type === attacker.type
         ) {
           viableMoves.push(inspectedMove);
         }
       });
     }
     if (viableMoves.length === 0) {
-      availableMoves.forEach((inspectedMove) => {
-        if (!defender.defendsWellAgainst(attacker.moves[inspectedMove].type)) {
+      computerMoves.forEach((inspectedMove) => {
+        if (!defender.defendsWellAgainst(attackerMoves[inspectedMove].type)) {
           viableMoves.push(inspectedMove);
         }
       });
     }
     if (viableMoves.length === 0) {
       selectedMove =
-        attacker.moves[
-          availableMoves[Math.floor(Math.random() * availableMoves.length)]
+        attackerMoves[
+          computerMoves[Math.floor(Math.random() * computerMoves.length)]
         ];
     } else {
       selectedMove =
-        attacker.moves[
+        attackerMoves[
           viableMoves[Math.floor(Math.random() * viableMoves.length)]
         ];
     }
