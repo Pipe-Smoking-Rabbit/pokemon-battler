@@ -5,6 +5,7 @@ class Pokemon {
     this.name = name;
     this.type = "normal";
     this.hitPoints = 100;
+    this.maxHP = 100;
     this.attackDamage = 10;
     this.moves = {
       tackle: {
@@ -38,7 +39,6 @@ class Pokemon {
     );
     let baseDamage = this.attackDamage;
     let critDamage = 0;
-    let effectiveTypeBonus = 0;
     let powerMoveBonus = 0;
     let outgoingDamage = 0;
 
@@ -60,23 +60,25 @@ class Pokemon {
         baseDamage *= 0.75;
       }
       if (defender.defendsPoorlyAgainst(selectedMove.type)) {
-        effectiveTypeBonus = baseDamage * 0.5;
+        baseDamage *= 1.5;
         console.log(chalk.green(`\nEFFECTIVE TYPE (x1.5 DAMAGE)\n`));
       }
       if (defender.defendsWellAgainst(selectedMove.type)) {
-        effectiveTypeBonus = baseDamage * -0.5;
-        console.log(chalk.red(`\nINEFFECTIVE TYPE (x0.5 DAMAGE)\n`));
+        baseDamage *= 0.5;
+        console.log(chalk.red(`\nINEFFECTIVE TYPE (HALF DAMAGE)\n`));
       }
       const critRoll = Math.random() * 100;
-      if (critRoll > 90) {
+      if (critRoll > 90 + missChance / 100) {
         critDamage = baseDamage * 0.5;
-        console.log(chalk.greenBright(`\nCRITICAL HIT!\n`));
-      } else {
-        console.log(chalk.green(`\nHIT\n`));
       }
       if (selectedMove.strength === "power") {
         powerMoveBonus = baseDamage * 0.2;
       }
+      outgoingDamage = Math.round(baseDamage + critDamage + powerMoveBonus);
+      critDamage
+        ? console.log(chalk.blue(`\nCRITICAL HIT! [${outgoingDamage} DAMAGE]`))
+        : console.log(chalk.blue(`\nHIT! [${outgoingDamage} DAMAGE]\n`));
+
       if (selectedMove.statusEffect) {
         const statusAccuracy = Math.random() * 100;
         if (
@@ -84,19 +86,13 @@ class Pokemon {
           critDamage
         ) {
           console.log(
-            `\n${defender.name} has been ${selectedMove.statusEffect.name}.\n`
+            chalk.blue(
+              `[${defender.name} has been ${selectedMove.statusEffect.name}]\n`.toUpperCase()
+            )
           );
           defender.status = selectedMove.statusEffect;
-        } else {
-          console.log(
-            `\n${defender.name} managed to avoid being ${selectedMove.statusEffect.name}.\n`
-          );
         }
       }
-      outgoingDamage = Math.round(
-        baseDamage + critDamage + effectiveTypeBonus + powerMoveBonus
-      );
-      console.log(chalk.blue(`\n${outgoingDamage} DAMAGE\n`));
       return outgoingDamage;
     }
   }
@@ -268,6 +264,7 @@ class Pidgey extends Flying {
     super(name);
     this.attackDamage = 12;
     this.hitPoints = 32;
+    this.maxHP = 32;
     this.moves = {
       Tackle: {
         name: "tackle",
@@ -299,6 +296,7 @@ class Geodude extends Ground {
     super(name);
     this.attackDamage = 12;
     this.hitPoints = 66;
+    this.maxHP = 65;
     this.moves = {
       Tackle: {
         name: "tackle",
@@ -324,6 +322,7 @@ class Pikachu extends Electric {
     super(name);
     this.attackDamage = 18;
     this.hitPoints = 36;
+    this.maxHP = 36;
     this.moves = {
       Tackle: {
         name: "tackle",
@@ -349,6 +348,7 @@ class Charmander extends Fire {
     super(name);
     this.attackDamage = 17;
     this.hitPoints = 40;
+    this.maxHP = 40;
     this.moves = {
       Tackle: {
         name: "tackle",
@@ -380,6 +380,7 @@ class Squirtle extends Water {
     super(name);
     this.attackDamage = 16;
     this.hitPoints = 46;
+    this.maxHP = 46;
     this.moves = {
       Tackle: {
         name: "tackle",
@@ -405,6 +406,7 @@ class Bulbasaur extends Grass {
     super(name);
     this.attackDamage = 14;
     this.hitPoints = 54;
+    this.maxHP = 54;
     this.moves = {
       Tackle: {
         name: "tackle",
@@ -441,6 +443,7 @@ class Rattata extends Pokemon {
     super(name);
     this.attackDamage = 15;
     this.hitPoints = 50;
+    this.maxHP = 50;
     this.moves = {
       Tackle: {
         name: "tackle",
