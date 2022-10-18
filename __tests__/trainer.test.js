@@ -37,7 +37,7 @@ describe("Trainer", () => {
         const trainer = new Trainer("darren", Pokeball);
         const bulbasaur = new Bulbasaur("chadignton bear");
         const charlizard = new Charmander("charlizard");
-        const rattata = new Rattata("remi")
+        const rattata = new Rattata("remi");
         trainer.catch(bulbasaur);
         trainer.catch(charlizard);
         trainer.catch(rattata);
@@ -45,49 +45,53 @@ describe("Trainer", () => {
         expect(trainer.belt[1].storage).toBe(charlizard);
         expect(trainer.belt[2].storage).toBe(rattata);
       });
-      test('catch method returns a console log informing the user that due to bad life decisions they no longer have any empty pokeballs remaining with which to catch more pokemon', () => {
-          const trainer = new Trainer("darren", Pokeball);
-          const bulbasaur = new Bulbasaur("chadignton bear");
-          const charlizard = new Charmander("charlizard");
-          const consoleSpy = jest.spyOn(console, "log");
-          trainer.catch(bulbasaur);
-          trainer.catch(bulbasaur);
-          trainer.catch(bulbasaur);
-          trainer.catch(bulbasaur);
-          trainer.catch(bulbasaur);
-          trainer.catch(bulbasaur);
-          trainer.catch(charlizard);
-          for (let i = 0; i < trainer.belt.length; i++) {
-              expect(trainer.belt[i].storage).not.toBe(charlizard);
-          }
-          expect(consoleSpy).toHaveBeenCalledWith("You don't have any empty pokeballs left!");
-          consoleSpy.mockRestore();
+      test("catch method returns a console log informing the user that due to bad life decisions they no longer have any empty pokeballs remaining with which to catch more pokemon", () => {
+        const trainer = new Trainer("darren", Pokeball);
+        const bulbasaur = new Bulbasaur("chadignton bear");
+        const charlizard = new Charmander("charlizard");
+        const consoleSpy = jest.spyOn(console, "log");
+        trainer.catch(bulbasaur);
+        trainer.catch(bulbasaur);
+        trainer.catch(bulbasaur);
+        trainer.catch(bulbasaur);
+        trainer.catch(bulbasaur);
+        trainer.catch(bulbasaur);
+        trainer.catch(charlizard);
+        for (let i = 0; i < trainer.belt.length; i++) {
+          expect(trainer.belt[i].storage).not.toBe(charlizard);
+        }
+        expect(consoleSpy).toHaveBeenCalledWith(
+          "You don't have any empty pokeballs left!"
+        );
+        consoleSpy.mockRestore();
       });
     });
-    describe('getPokemon method', () => {
-      test('getPokemon returns the first pokemon in the trainers belt, if the name matches the passed argument', () => {
+    describe("getPokemon method", () => {
+      test("getPokemon returns the first pokemon in the trainers belt, if the name matches the passed argument", () => {
         const trainer = new Trainer("Guysie Bob", Pokeball);
-        const lizarchar = new Charmander('Friendboy');
+        const lizarchar = new Charmander("Friendboy");
         trainer.catch(lizarchar);
-        expect(trainer.getPokemon("Friendboy")).toBe(lizarchar)
+        expect(trainer.getPokemon("Friendboy")).toBe(lizarchar);
       });
-      test('getPokemon returns the first pokemon in the belt which has a name matching the passed argument', () => {
+      test("getPokemon returns the first pokemon in the belt which has a name matching the passed argument", () => {
         const trainer = new Trainer("Guysie Bob", Pokeball);
-        const wetty = new Squirtle('Squirty Turty');
-        const lizarchar = new Charmander('Friendboy');
+        const wetty = new Squirtle("Squirty Turty");
+        const lizarchar = new Charmander("Friendboy");
         trainer.catch(wetty);
         trainer.catch(wetty);
         trainer.catch(lizarchar);
-        expect(trainer.getPokemon("Friendboy")).toBe(lizarchar)
+        expect(trainer.getPokemon("Friendboy")).toBe(lizarchar);
       });
       test('getPokemon returns "You don\'t have a pokemon by that name"', () => {
         const trainer = new Trainer("Guysie Bob", Pokeball);
-        const wetty = new Squirtle('Squirty Turty');
-        const lizarchar = new Charmander('Friendboy');
+        const wetty = new Squirtle("Squirty Turty");
+        const lizarchar = new Charmander("Friendboy");
         trainer.catch(wetty);
         trainer.catch(lizarchar);
-        expect(trainer.getPokemon("Wetman")).toBe("You don't have a pokemon by that name")
-      })
+        expect(trainer.getPokemon("Wetman")).toBe(
+          "You don't have a pokemon by that name"
+        );
+      });
     });
   });
 });

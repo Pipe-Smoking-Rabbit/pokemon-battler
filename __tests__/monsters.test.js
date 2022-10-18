@@ -1,4 +1,13 @@
-const { Pokemon, Fire, Water, Grass, Charmander, Squirtle, Bulbasaur, Rattata } = require("../scripts/monsters");
+const {
+  Pokemon,
+  Fire,
+  Water,
+  Grass,
+  Charmander,
+  Squirtle,
+  Bulbasaur,
+  Rattata,
+} = require("../scripts/monsters");
 
 describe("Pokemon Class", () => {
   test("Should return an instance of the Pokemon class", () => {
@@ -41,7 +50,7 @@ describe("Pokemon Class", () => {
       const dansMon = new Pokemon("Morapungo");
       dansMon.takeDamage(20);
       expect(dansMon.hitPoints).toBe(80);
-      const mitchsMon = new Pokemon("Ian")
+      const mitchsMon = new Pokemon("Ian");
       mitchsMon.takeDamage(40);
       expect(mitchsMon.hitPoints).toBe(60);
     });
@@ -62,10 +71,10 @@ describe("Pokemon Class", () => {
       expect(dansMon.hasFainted()).toBe(false);
     });
     test("hasFainted returns true when hitPoints has reached 0", () => {
-    const dansMon = new Pokemon("Morapungo");
+      const dansMon = new Pokemon("Morapungo");
       dansMon.takeDamage(dansMon.hitPoints);
       expect(dansMon.hasFainted()).toBe(true);
-    })
+    });
   });
 });
 
@@ -145,27 +154,27 @@ describe("testing for implementation of species of pokemons", () => {
       },
     });
   });
-  test('Squirtle returns an instance of the water class and pokemon class, also has own move', () => {
-      const squirtle = new Squirtle("Crush");
-      expect(squirtle).toBeInstanceOf(Water);
-      expect(squirtle).toBeInstanceOf(Pokemon);
-      expect(squirtle.moves).toEqual({
-        Tackle: {
-          name: "tackle",
-          type: "normal",
-          strength: "basic",
-        },
-        "Water Gun": {
-          name: "water gun",
-          type: "water",
-          strength: "basic",
-        },
-        "Hydro pump": {
-          name: "hydro pump",
-          type: "water",
-          strength: "power",
-        },
-      });
+  test("Squirtle returns an instance of the water class and pokemon class, also has own move", () => {
+    const squirtle = new Squirtle("Crush");
+    expect(squirtle).toBeInstanceOf(Water);
+    expect(squirtle).toBeInstanceOf(Pokemon);
+    expect(squirtle.moves).toEqual({
+      Tackle: {
+        name: "tackle",
+        type: "normal",
+        strength: "basic",
+      },
+      "Water Gun": {
+        name: "water gun",
+        type: "water",
+        strength: "basic",
+      },
+      "Hydro pump": {
+        name: "hydro pump",
+        type: "water",
+        strength: "power",
+      },
+    });
   });
   test("Bulbasaur returns an instance of the grass class and pokemon class, also has own move", () => {
     const bulbasaur = new Bulbasaur("Crush");
@@ -187,9 +196,9 @@ describe("testing for implementation of species of pokemons", () => {
         type: "grass",
         strength: "power",
       },
-      "Poison Powder": {
-        name: "poison powder",
-        type: "poison",
+      "Poison Ivy": {
+        name: "poison ivy",
+        type: "grass",
         strength: "basic",
         statusEffect: {
           name: "poisoned",
