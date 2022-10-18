@@ -1,3 +1,4 @@
+const chalk = require("chalk");
 const inquirer = require("inquirer");
 const {
   Rattata,
@@ -17,7 +18,8 @@ async function catchPokemon(trainer) {
       {
         type: "list",
         name: "choice",
-        message: "How many Pokemon do you want to catch? (Your opponent has 3 Pokemons)",
+        message:
+          "How many Pokemon do you want to catch? (Your opponent has 3 Pokemons)",
         choices: [2, 3, 4],
       },
     ])
@@ -39,13 +41,13 @@ async function catchPokemon(trainer) {
           name: "choice",
           message: "What species of Pokemon would you like to catch?",
           choices: [
-            "Catch a Rattata - normal type",
-            "Catch a Squirtle - water type",
-            "Catch a Charmander - fire type",
-            "Catch a Bulbasaur - grass type",
-            "Catch a Pikachu - electric type",
-            "Catch a Geodude - ground type",
-            "Catch a Pidgey - flying type",
+            `Catch a Rattata  ${chalk.gray("[NORMAL]")}`,
+            `Catch a Squirtle ${chalk.blueBright("[WATER]")}`,
+            `Catch a Charmander ${chalk.redBright("[FIRE]")}`,
+            `Catch a Bulbasaur ${chalk.greenBright("[GRASS]")}`,
+            `Catch a Pikachu ${chalk.cyanBright("[ELECTRIC]")}`,
+            `Catch a Geodude ${chalk.yellow("[GROUND]")}`,
+            `Catch a Pidgey ${chalk.magentaBright("[FLYING]")}`,
           ],
         },
       ])
@@ -63,7 +65,7 @@ async function catchPokemon(trainer) {
           default: "Choose a nickname for your Pokemon",
         },
       ])
-      .then(({input}) => {
+      .then(({ input }) => {
         console.clear();
         switch (species) {
           case "Catch a Rattata - normal type":

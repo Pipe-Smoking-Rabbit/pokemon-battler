@@ -423,9 +423,9 @@ class Bulbasaur extends Grass {
         type: "grass",
         strength: "power",
       },
-      "Poison Powder": {
-        name: "poison powder",
-        type: "poison",
+      "Poison Ivy": {
+        name: "poison ivy",
+        type: "grass",
         strength: "basic",
         statusEffect: {
           name: "poisoned",
