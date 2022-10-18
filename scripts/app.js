@@ -1,25 +1,44 @@
 const Trainer = require("../scripts/trainer");
 const inquirer = require("inquirer");
 const {
-  Pokemon,
-  Fire,
-  Water,
-  Grass,
   Charmander,
   Squirtle,
   Bulbasaur,
   Rattata,
-  Pidgey
+  Pidgey,
+  Pikachu,
+  Geodude,
 } = require("../scripts/monsters");
 const catchPokemon = require("./functions/catch");
 
 const testTrainer = new Trainer("Keith");
 const testEnemy = new Trainer("Bob");
 
-testEnemy.catch(new Charmander("Charlizard"));
-testEnemy.catch(new Bulbasaur("Planty"));
-// testEnemy.catch(new Squirtle("Squirty"));
-testEnemy.catch(new Pidgey("Hawkie"));
+const allEnemyPokemon = [
+  new Charmander("Charmander"),
+  new Bulbasaur("Bulbasaur"),
+  new Pidgey("Pidgey"),
+  new Squirtle("Squirtle"),
+  new Rattata("Rattata"),
+  new Pikachu("Pikachu"),
+  new Geodude("Geodude"),
+];
+
+function getUniqueIndex(num1, num2) {
+  let randomNumber = Math.floor(Math.random() * allEnemyPokemon.length);
+  while (randomNumber === num1 || randomNumber === num2) {
+    randomNumber = Math.floor(Math.random() * allEnemyPokemon.length);
+  }
+  return randomNumber;
+}
+
+const firstIndex = getUniqueIndex();
+const secondIndex = getUniqueIndex(firstIndex);
+const thirdIndex = getUniqueIndex(firstIndex, secondIndex);
+
+testEnemy.catch(allEnemyPokemon[firstIndex]);
+testEnemy.catch(allEnemyPokemon[secondIndex]);
+testEnemy.catch(allEnemyPokemon[thirdIndex]);
 console.clear();
 
 begin = async () => {
