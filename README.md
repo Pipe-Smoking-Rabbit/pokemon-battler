@@ -28,3 +28,11 @@ You win or lose when either all your opponents Pokemons have fainted, or all of 
 *Tip: at any point you may chose to run away, but this will immediately forfeit the game.*
 
 ### `Good Luck!`
+
+
+# To-do
+* Computer can decide to change it's pokemon if matchup is unfavourable
+* Complete addition of Mankey, and two more pokemons for Ice and Rock yet to be decided
+* Address balancing to nerf damage when using a non-native move type such as tackle
+* Save file that will reload a player to their trainer 
+* Pokemon XP which is saved with the trainer
