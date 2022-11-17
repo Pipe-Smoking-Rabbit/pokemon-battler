@@ -195,7 +195,7 @@
     "yargs-parser": "^21.0.1"
   },
   "scripts": {
-    "start": "node ./scripts/app.js",
+    "start": "node ./app/app.js",
     "test": "jest"
   },
   "repository": {

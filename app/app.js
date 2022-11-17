@@ -1,4 +1,4 @@
-const Trainer = require("../scripts/trainer");
+const Trainer = require("./classes/trainer");
 const inquirer = require("inquirer");
 const {
   Charmander,
@@ -8,7 +8,7 @@ const {
   Pidgey,
   Pikachu,
   Geodude,
-} = require("../scripts/monsters");
+} = require("./classes/monsters/monsters");
 const catchPokemon = require("./functions/catch");
 
 const testTrainer = new Trainer("Keith");

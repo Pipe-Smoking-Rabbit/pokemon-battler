@@ -1,4 +1,4 @@
-const Pokeball = require("../scripts/pokeball");
+const Pokeball = require("../app/classes/pokeball");
 const {
   Pokemon,
   Fire,
@@ -8,7 +8,7 @@ const {
   Squirtle,
   Bulbasaur,
   Rattata,
-} = require("../scripts/monsters");
+} = require("../app/classes/monsters");
 
 describe("Pokeball Class", () => {
   test("Returns an instance of the Pokeball class", () => {

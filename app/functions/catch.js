@@ -8,7 +8,7 @@ const {
   Pikachu,
   Geodude,
   Pidgey,
-} = require("../monsters");
+} = require("../classes/monsters/monsters");
 
 async function catchPokemon(trainer) {
   let numberOfPokemon = 0;

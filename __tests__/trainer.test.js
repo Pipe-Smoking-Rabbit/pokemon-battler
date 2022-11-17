@@ -1,5 +1,5 @@
-const Trainer = require("../scripts/trainer");
-const Pokeball = require("../scripts/pokeball");
+const Trainer = require("../app/classes/trainer");
+const Pokeball = require("../app/classes/pokeball");
 const {
   Pokemon,
   Fire,
@@ -9,7 +9,7 @@ const {
   Squirtle,
   Bulbasaur,
   Rattata,
-} = require("../scripts/monsters");
+} = require("../app/classes/monsters");
 
 describe("Trainer", () => {
   test('Trainer contains a property "belt" which is an array of 6 unique Pokeballs', () => {

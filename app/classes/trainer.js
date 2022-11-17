@@ -1,6 +1,6 @@
 const inquirer = require("inquirer");
 const Pokeball = require("./pokeball")
-const battleScript = require("./battleScript");
+const battleScript = require("../battleScript");
 
 class Trainer {
     constructor(name) {

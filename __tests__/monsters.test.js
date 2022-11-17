@@ -7,7 +7,7 @@ const {
   Squirtle,
   Bulbasaur,
   Rattata,
-} = require("../scripts/monsters");
+} = require("../app/classes/monsters");
 
 describe("Pokemon Class", () => {
   test("Should return an instance of the Pokemon class", () => {
