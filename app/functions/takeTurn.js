@@ -12,8 +12,14 @@ async function takeTurn(attacker, defender, playerTurn) {
       const type = attackerMoves[move].type.toUpperCase();
       const colour = typeColour[type.toLowerCase()];
       const strength = attackerMoves[move].strength.toUpperCase();
+      const defenderStatusStorage = defender.status;
+      const damage = attacker.useMove(attackerMoves[move], defender);
+      console.clear();
+      defender.status = defenderStatusStorage;
       return {
-        name: `${move} ${colour(`[${type}]`)} ${colour(`[${strength}]`)}`,
+        name: `${move} ${colour(`[${type}]`)} ${colour(
+          `[${strength}]`
+        )} ${colour(`[${damage} DMG]`)}`,
         value: move,
       };
     });
