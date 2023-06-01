@@ -39,7 +39,6 @@ class Pokemon {
     );
     let baseDamage = this.attackDamage;
     let critDamage = 0;
-    let powerMoveBonus = 0;
     let outgoingDamage = 0;
 
     const accuracy = Math.random() * 100;
@@ -60,21 +59,21 @@ class Pokemon {
         baseDamage *= 0.75;
       }
       if (defender.defendsPoorlyAgainst(selectedMove.type)) {
-        baseDamage *= 1.5;
-        console.log(chalk.green(`\nEFFECTIVE TYPE (x1.5 DAMAGE)\n`));
+        baseDamage *= 2;
+        console.log(chalk.green(`\nEFFECTIVE TYPE (DOUBLE DAMAGE)\n`));
       }
       if (defender.defendsWellAgainst(selectedMove.type)) {
         baseDamage *= 0.5;
         console.log(chalk.red(`\nINEFFECTIVE TYPE (HALF DAMAGE)\n`));
       }
+      if (selectedMove.strength === "power") {
+        baseDamage *= 1.2;
+      }
       const critRoll = Math.random() * 100;
       if (critRoll > 90 + missChance / 100) {
         critDamage = baseDamage * 0.5;
       }
-      if (selectedMove.strength === "power") {
-        powerMoveBonus = baseDamage * 0.2;
-      }
-      outgoingDamage = Math.round(baseDamage + critDamage + powerMoveBonus);
+      outgoingDamage = Math.round(baseDamage + critDamage);
       critDamage
         ? console.log(chalk.blue(`\nCRITICAL HIT! [${outgoingDamage} DAMAGE]`))
         : console.log(chalk.blue(`\nHIT! [${outgoingDamage} DAMAGE]\n`));
@@ -87,7 +86,7 @@ class Pokemon {
         ) {
           console.log(
             chalk.blue(
-              `[${defender.name} has been ${selectedMove.statusEffect.name}]\n`.toUpperCase()
+              `${defender.name} is suffering from: ${selectedMove.statusEffect.name}\n`.toUpperCase()
             )
           );
           defender.status = selectedMove.statusEffect;
