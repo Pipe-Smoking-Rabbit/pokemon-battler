@@ -1,5 +1,6 @@
 const Trainer = require("./classes/trainer");
 const inquirer = require("inquirer");
+const getUniqueIndex = require("./functions/get-unique-index")
 const {
   Charmander,
   Squirtle,
@@ -11,8 +12,8 @@ const {
 } = require("./classes/monsters/monsters");
 const catchPokemon = require("./functions/catch");
 
-const testTrainer = new Trainer("Keith");
-const testEnemy = new Trainer("Bob");
+const playerTrainer = new Trainer("Keith");
+const computerTrainer = new Trainer("Bob");
 
 const allEnemyPokemon = [
   new Charmander("Charmander"),
@@ -24,25 +25,19 @@ const allEnemyPokemon = [
   new Geodude("Geodude"),
 ];
 
-function getUniqueIndex(num1, num2) {
-  let randomNumber = Math.floor(Math.random() * allEnemyPokemon.length);
-  while (randomNumber === num1 || randomNumber === num2) {
-    randomNumber = Math.floor(Math.random() * allEnemyPokemon.length);
-  }
-  return randomNumber;
-}
+
 
 const firstIndex = getUniqueIndex();
 const secondIndex = getUniqueIndex(firstIndex);
 const thirdIndex = getUniqueIndex(firstIndex, secondIndex);
 
-testEnemy.catch(allEnemyPokemon[firstIndex]);
-testEnemy.catch(allEnemyPokemon[secondIndex]);
-testEnemy.catch(allEnemyPokemon[thirdIndex]);
+computerTrainer.catch(allEnemyPokemon[firstIndex]);
+computerTrainer.catch(allEnemyPokemon[secondIndex]);
+computerTrainer.catch(allEnemyPokemon[thirdIndex]);
 console.clear();
 
 begin = async () => {
-  await catchPokemon(testTrainer);
+  await catchPokemon(playerTrainer);
 
   await inquirer
     .prompt([
@@ -63,7 +58,7 @@ begin = async () => {
       console.log(error);
     });
 
-  testTrainer.fight(testEnemy);
+  playerTrainer.fight(computerTrainer);
 };
 
 begin();

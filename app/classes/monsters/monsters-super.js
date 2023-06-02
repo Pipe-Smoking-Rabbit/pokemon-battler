@@ -30,8 +30,18 @@ class Pokemon {
     this.hitPoints -= damage;
   }
 
+  calculateMoveMissChance(selectedMove) {
+    let missChance = 15;
+    if (this.status.missChanceMultiplier) {
+      missChance *= this.status.missChanceMultiplier;
+      // this.status.turnsRemaining--;
+      // if (!this.status.turnsRemaining) this.status = {};
+    }
+    if (selectedMove.strength === "power") missChance *= 2;
+    return missChance;
+  }
+
   useMove(selectedMove, defender) {
-    // console.clear();
     console.log(
       chalk.yellow(
         `\n"${this.name}, use ${selectedMove.name}!"\n`.toUpperCase()
@@ -41,19 +51,11 @@ class Pokemon {
     let critDamage = 0;
     let outgoingDamage = 0;
 
+    const missChance = this.calculateMoveMissChance(selectedMove);
     const accuracy = Math.random() * 100;
-    let missChance = 15;
-    if (this.status.missChanceMultiplier) {
-      missChance *= this.status.missChanceMultiplier;
-      this.status.turnsRemaining--;
-      if (!this.status.turnsRemaining) this.status = {};
-    }
-    if (
-      (selectedMove.strength === "basic" && accuracy < missChance) ||
-      (selectedMove.strength === "power" && accuracy < missChance * 2)
-    ) {
+
+    if (accuracy < missChance) {
       console.log(chalk.red(`\nMISS\n`));
-      return 0;
     } else {
       if (this.type !== selectedMove.type) {
         baseDamage *= 0.75;
@@ -92,8 +94,19 @@ class Pokemon {
           defender.status = selectedMove.statusEffect;
         }
       }
-      return outgoingDamage;
+      if (this.status.missChanceMultiplier) {
+        this.status.turnsRemaining--;
+        if (!this.status.turnsRemaining) {
+          console.log(
+            chalk.blue(
+              `${this.name} has recovered from: ${this.status.name}\n`.toUpperCase()
+            )
+          );
+          this.status = {};
+        }
+      }
     }
+    return outgoingDamage;
   }
 
   hasFainted() {
