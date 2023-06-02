@@ -9,18 +9,16 @@ async function takeTurn(attacker, defender, playerTurn) {
   let selectedMove;
   if (playerTurn) {
     const humanMoves = Object.keys(attackerMoves).map((move) => {
-      const moveType = attackerMoves[move].type;
+      const thisMove = attackerMoves[move]
+      const moveType = thisMove.type;
       const colour = typeColour[moveType];
-      const strength = attackerMoves[move].strength;
       const accuracy =
-        100 - attacker.calculateMoveMissChance(attackerMoves[move]);
-      let damage = attacker.attackDamage;
-      if (attacker.type !== moveType) damage *= 0.75;
-      if (strength === "power") damage *= 1.2;
+        100 - attacker.calculateMoveMissChance(thisMove);
+      const damage = attacker.calculateMoveBaseDamage(thisMove)
       return {
         name: `${move} ${colour(`[${moveType.toUpperCase()}]`)}  ${colour(
           `[${damage.toFixed(0)} DMG]`
-        )} ${colour(`[%${accuracy.toFixed(0)} ACC]`)}`,
+        )} ${colour(`[${accuracy.toFixed(0)}% ACC]`)}`,
         value: move,
       };
     });
